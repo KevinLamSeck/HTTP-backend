@@ -4,6 +4,7 @@ import fr.aelion.streamer.dto.AddStudentDto;
 import fr.aelion.streamer.dto.SimpleStudentDto;
 import fr.aelion.streamer.dto.SimpleStudentProjection;
 import fr.aelion.streamer.entities.Student;
+import fr.aelion.streamer.entities.User;
 import fr.aelion.streamer.repositories.StudentRepository;
 import fr.aelion.streamer.services.exceptions.EmailAlreadyExistsException;
 import fr.aelion.streamer.services.exceptions.LoginAlreadyExistsException;
@@ -13,11 +14,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 @Service
 public class StudentService {
@@ -100,5 +99,15 @@ public class StudentService {
                     }
                 });
         return nonDeletedIds;
+    }
+
+    public Optional<User> findByLoginAndPassword(String login, String password) {
+        Optional<Student> stud = repository.findByLoginAndPassword(login, password);
+        User value = new User();
+        value.setPassword(stud.get().getPassword());
+        value.setLogin(stud.get().getLogin());
+        value.setId(stud.get().getId());
+        Optional<User> user = Optional.of(value);
+        return user;
     }
 }
