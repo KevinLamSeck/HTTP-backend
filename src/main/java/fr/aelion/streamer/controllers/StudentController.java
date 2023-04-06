@@ -96,8 +96,8 @@ public class StudentController {
     }
 
 
-    @PostMapping("byEmailAndPassword")
-    public ResponseEntity<?> findByLoginAndEmail(@RequestBody Student Student) {
+    @PostMapping("byLoginAndPassword")
+    public ResponseEntity<?> findByLoginAndPassword(@RequestBody Student Student) {
         return this.studentService.findByLoginAndPassword(Student.getLogin(), Student.getPassword())
                 .map(u -> {
                     return ResponseEntity.ok(u);

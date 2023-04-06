@@ -1,6 +1,5 @@
 package fr.aelion.streamer.repositories;
 
-import fr.aelion.streamer.dto.SimpleStudentDto;
 import fr.aelion.streamer.dto.SimpleStudentProjection;
 import fr.aelion.streamer.entities.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer> {
@@ -26,5 +26,5 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     )
     public Student nativeByEmailOrLogin(@Param("email") String email, @Param("login") String login);
 
-    Optional<Student> findByLoginAndPassword(String login, String password);
+     Optional<Student> findByLoginAndPassword(String login, String password);
 }
