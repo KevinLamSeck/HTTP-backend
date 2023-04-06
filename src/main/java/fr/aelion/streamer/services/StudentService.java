@@ -9,14 +9,9 @@ import fr.aelion.streamer.services.exceptions.EmailAlreadyExistsException;
 import fr.aelion.streamer.services.exceptions.LoginAlreadyExistsException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -100,5 +95,9 @@ public class StudentService {
                     }
                 });
         return nonDeletedIds;
+    }
+
+    public Optional<Student> findByLoginAndPassword(String login, String password) {
+        return null;// repository.findByLoginAndPassword(login, password);
     }
 }

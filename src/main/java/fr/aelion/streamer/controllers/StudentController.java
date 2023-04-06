@@ -94,4 +94,14 @@ public class StudentController {
     public ResponseEntity<?> multipleDelete(@RequestBody Set<Integer> ids) {
         return ResponseEntity.ok(studentService.multipleDelete(ids));
     }
+
+
+    @PostMapping("byEmailAndPassword")
+    public ResponseEntity<?> findByLoginAndEmail(@RequestBody Student Student) {
+        return this.studentService.findByLoginAndPassword(Student.getLogin(), Student.getPassword())
+                .map(u -> {
+                    return ResponseEntity.ok(u);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

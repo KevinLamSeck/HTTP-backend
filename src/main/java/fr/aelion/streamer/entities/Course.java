@@ -3,6 +3,7 @@ package fr.aelion.streamer.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Table(name="course")
 @Getter
 @Setter
+@Embeddable
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,14 +20,21 @@ public class Course {
     @Column(nullable = false)
     private String title;
 
+    //@Value("${false}")
+    @Column(columnDefinition = "boolean default false",nullable = false)
+    private Boolean published=false;
+
     private LocalDate createdAt;
 
     private LocalDate updatedAt;
 
     private String objective;
 
+    @ManyToOne()
+    private Student creator;
+
     @OneToMany(mappedBy = "course")
-    private Set<Module> modules;
+    private Set<CourseToModule> modules;
 
     public Course() {
         this.createdAt = LocalDate.now();

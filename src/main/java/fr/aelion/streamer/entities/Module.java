@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Embeddable
 public class Module {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +20,12 @@ public class Module {
 
     private String objective;
 
-    @ManyToOne(targetEntity = Course.class)
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @ManyToOne()
+    private Student creator;
 
     @OneToMany(mappedBy = "module")
-    private List<Media> medias;
+    private List<CourseToModule> courses;
+
+    @OneToMany(mappedBy = "module")
+    private List<ModuleToMedia> medias;
 }

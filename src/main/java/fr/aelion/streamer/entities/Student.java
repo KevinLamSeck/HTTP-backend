@@ -1,14 +1,17 @@
 package fr.aelion.streamer.entities;
 
+import fr.aelion.streamer.enumFolder.MemberType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name="student")
+@Table(name="member")
 @Getter
 @Setter
-public class Student {
+public class Student {//s'apelle member dans la bdd maintenant
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -20,6 +23,16 @@ public class Student {
     private String email;
 
     private String phoneNumber;
+    private MemberType role;
+
+    @OneToMany(mappedBy = "creator")
+    private List<Course> courses;
+
+    @OneToMany(mappedBy = "creator")
+    private List<Module> modules;
+
+    @OneToMany(mappedBy = "creator")
+    private List<Media> medias;
 
     private String login;
 

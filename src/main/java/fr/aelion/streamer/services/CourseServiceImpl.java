@@ -1,13 +1,12 @@
 package fr.aelion.streamer.services;
 
-import fr.aelion.streamer.dto.CourseAddDto;
-import fr.aelion.streamer.dto.FullCourseDto;
-import fr.aelion.streamer.dto.MediaDto;
-import fr.aelion.streamer.dto.ModuleDto;
+import fr.aelion.streamer.dto.*;
 import fr.aelion.streamer.entities.Course;
+import fr.aelion.streamer.entities.CourseToModule;
 import fr.aelion.streamer.entities.Media;
 import fr.aelion.streamer.entities.Module;
 import fr.aelion.streamer.repositories.CourseRepository;
+import fr.aelion.streamer.repositories.CourseToModuleRepository;
 import fr.aelion.streamer.repositories.MediaRepository;
 import fr.aelion.streamer.repositories.ModuleRepository;
 import fr.aelion.streamer.services.interfaces.CourseService;
@@ -23,6 +22,8 @@ import java.util.stream.Collectors;
 public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseRepository repository;
+    @Autowired
+    private CourseToModuleRepository courseToModuleRepository;
 
     @Autowired
     private MediaRepository mediaRepository;
@@ -31,6 +32,7 @@ public class CourseServiceImpl implements CourseService {
     private ModuleRepository moduleRepository;
     @Autowired
     ModelMapper modelMapper;
+
     public List<FullCourseDto> findAll() {
         var fullCourses = repository.findAll()
                 .stream()
@@ -41,9 +43,13 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
         // Compute media time
         for (FullCourseDto fc : fullCourses) {
-            for (ModuleDto m : fc.getModules()) {
-                var medias = m.getMedias();
-                m.setTotalTime(convertToTime(medias));
+            for (Module m : fc.getModuleList()) {
+                ModuleDto mDTO = modelMapper.map(m, ModuleDto.class);
+                List<MediaDto> allMedias = new ArrayList<MediaDto>();
+                for (Media medias : mDTO.getMediaList()) {
+                    allMedias.add(modelMapper.map(medias, MediaDto.class));
+                }
+                mDTO.setTotalTime(convertToTime(allMedias));
             }
         }
         return fullCourses;
@@ -51,12 +57,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public FullCourseDto findOne(int id) {
-       return repository.findById(id)
-               .map((c) -> {
-                    var fullCourseDto =  modelMapper.map(c, FullCourseDto.class);
+        return repository.findById(id)
+                .map((c) -> {
+                    var fullCourseDto = modelMapper.map(c, FullCourseDto.class);
                     return fullCourseDto;
-               })
-               .orElseThrow();
+                })
+                .orElseThrow();
 
     }
 
@@ -66,13 +72,21 @@ public class CourseServiceImpl implements CourseService {
         var oCourse = repository.findById(id);
 
         if (oCourse.isPresent()) {
-            // 1. Update all medias of all modules to null module
-            for (Module module : oCourse.get().getModules()) {
-                for (Media media : module.getMedias()) {
-                    media.setModule(null);
-                    mediaRepository.save(media);
+            // 1. Update all modules to null course
+            for (CourseToModule cTm : oCourse.get().getModules()) {
+                //retirer le CTM de la list des cours dde chaque module
+                Module changedModule = cTm.getModule();
+                List<CourseToModule> lstCtm = new ArrayList<CourseToModule>();
+                for (CourseToModule ctmInModule : cTm.getModule().getCourses()) {
+                    if (ctmInModule != cTm) {
+                        lstCtm.add(ctmInModule);
+                    }
                 }
-                moduleRepository.delete(module);
+                changedModule.setCourses(lstCtm);//update le module avec la nouvelle liste de liaison
+                moduleRepository.save(changedModule);//save dans la bdd
+
+
+                courseToModuleRepository.delete(cTm);//supprime les liaisons vide
             }
 
             // 3. Remove course
@@ -93,19 +107,36 @@ public class CourseServiceImpl implements CourseService {
 
         if (course.getModules().size() > 0) {
             Course finalNewCourse = newCourse;
-            Set<Module> courseModules = new HashSet<>();
-            course.getModules().forEach(mDto -> {
+            Set<CourseToModule> courseModules = new HashSet<>();
+
+            int i = 0;
+            for (ModuleAddDto mDto : course.getModules()) {
                 var module = modelMapper.map(mDto, Module.class);
-                module.setCourse(finalNewCourse);
+
+                //creer la table lien entre le cours et chaque module
+                CourseToModule courseToModule = new CourseToModule();
+                courseToModule.setModule(module);
+                courseToModule.setCourse(modelMapper.map(course, Course.class));
+                courseToModule.setOrderModule(i);
+                i++;
+
+                List<CourseToModule> cTm = new ArrayList<CourseToModule>();
+                cTm.add(courseToModule);
+                module.setCourses(cTm);
                 module = moduleRepository.save(module);
-                courseModules.add(module);
-            });
+                cTm.add(courseToModuleRepository.save(courseToModule));
+                courseModules.add(courseToModule);
+            }
+
+//            course.getModules().forEach((mDto -> {
+//
+//            });
             finalNewCourse.setModules(courseModules);
         }
         return modelMapper.map(newCourse, FullCourseDto.class);
     }
 
-    private String convertToTime(Set<MediaDto> medias) {
+    private String convertToTime(List<MediaDto> medias) {
         Float time = medias.stream()
                 .map(m -> {
                     m.setTotalTime(LocalTime.MIN.plusSeconds(m.getDuration().longValue()).toString());
