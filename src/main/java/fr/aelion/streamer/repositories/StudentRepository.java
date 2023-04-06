@@ -27,4 +27,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     public Student nativeByEmailOrLogin(@Param("email") String email, @Param("login") String login);
 
      Optional<Student> findByLoginAndPassword(String login, String password);
+
+     Optional<Student> findByLoginAndEmail(String login, String email);
 }

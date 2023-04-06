@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 @Service
 public class StudentService {
@@ -99,5 +100,12 @@ public class StudentService {
 
     public Optional<Student> findByLoginAndPassword(String login, String password) {
         return repository.findByLoginAndPassword(login, password);
+    }
+
+    public String recovery(String login, String email) {
+        if(!repository.findByLoginAndEmail(login, email).isEmpty()){
+            return "AAAAA AAAAA";
+        }
+        return null;
     }
 }

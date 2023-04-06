@@ -104,4 +104,14 @@ public class StudentController {
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
+
+    @PostMapping("recovery")
+    public ResponseEntity<?> recovery(@RequestBody Student Student) {
+        String response = (this.studentService.recovery(Student.getLogin(), Student.getEmail()));
+        if(response==null){
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(response);
+    }
 }
