@@ -27,4 +27,10 @@ public class MediaService {
         }).toList();
         return mediasDto;
     }
+
+    public Media findOne(int id) {
+        return repository.findById(id)
+                .map(s -> s)
+                .orElseThrow();
+    }
 }
