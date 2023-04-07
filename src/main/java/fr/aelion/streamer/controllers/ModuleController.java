@@ -2,8 +2,8 @@ package fr.aelion.streamer.controllers;
 
 import fr.aelion.streamer.dto.CourseAddDto;
 import fr.aelion.streamer.dto.FullCourseDto;
-import fr.aelion.streamer.dto.conceptorDtos.MediaDto;
-import fr.aelion.streamer.dto.conceptorDtos.ModuleDto;
+import fr.aelion.streamer.dto.simplerDtos.MediaDto;
+import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import fr.aelion.streamer.services.MediaService;
 import fr.aelion.streamer.services.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
