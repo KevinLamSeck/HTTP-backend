@@ -3,7 +3,9 @@ package fr.aelion.streamer.services;
 import fr.aelion.streamer.dto.AddStudentDto;
 import fr.aelion.streamer.dto.SimpleStudentDto;
 import fr.aelion.streamer.dto.SimpleStudentProjection;
+import fr.aelion.streamer.dto.conceptorDtos.StudentDto;
 import fr.aelion.streamer.entities.Student;
+import fr.aelion.streamer.enumFolder.MemberType;
 import fr.aelion.streamer.repositories.StudentRepository;
 import fr.aelion.streamer.services.exceptions.EmailAlreadyExistsException;
 import fr.aelion.streamer.services.exceptions.LoginAlreadyExistsException;
@@ -11,12 +13,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.security.SecureRandom;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-
+@CrossOrigin
 @Service
 public class StudentService {
     @Autowired
@@ -25,9 +27,13 @@ public class StudentService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<Student> findAll() {
+    public List<StudentDto> findAll() {
         List<Student> students = repository.findAll();
-        return students;
+        List<StudentDto> studentsDTO = students.stream().map(s->{
+            StudentDto studentDto = modelMapper.map(s, StudentDto.class);
+            return studentDto;
+        }).toList();
+        return studentsDTO;
     }
 
     public List<SimpleStudentDto> findSimpleStudents() {
@@ -58,6 +64,7 @@ public class StudentService {
             throw new LoginAlreadyExistsException("Login " + student.getLogin() + " already exists");
         }
         Student newStudent = modelMapper.map(student, Student.class);
+        newStudent.setRole(MemberType.STUDENT);
         newStudent = (Student) repository.save(newStudent);
 
         return newStudent;
@@ -100,6 +107,7 @@ public class StudentService {
         return nonDeletedIds;
     }
 
+    @CrossOrigin
     public Optional<Student> findByLoginAndPassword(String login, String password) {
         return repository.findByLoginAndPassword(login, password);
     }

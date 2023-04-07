@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.aelion.streamer.dto.AddStudentDto;
 import fr.aelion.streamer.dto.SimpleStudentDto;
 import fr.aelion.streamer.dto.SimpleStudentProjection;
+import fr.aelion.streamer.dto.conceptorDtos.StudentDto;
 import fr.aelion.streamer.entities.Student;
 import fr.aelion.streamer.services.exceptions.EmailAlreadyExistsException;
 import fr.aelion.streamer.services.exceptions.LoginAlreadyExistsException;
@@ -30,12 +31,13 @@ import fr.aelion.streamer.services.StudentService;
 
 @RestController
 @RequestMapping("api/v1/students") // http://127.0.0.1:8080/api/v1/students
+@CrossOrigin
 public class StudentController {
     @Autowired
     private StudentService studentService;
 
     @GetMapping
-    public List<Student> findAll() {
+    public List<StudentDto> findAll() {
         return studentService.findAll();
     }
     @GetMapping("{id}") // GET http://127.0.0.1:5000/api/v1/students/1
@@ -113,7 +115,6 @@ public class StudentController {
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
-
 
     @PostMapping("recovery")
     public ResponseEntity<?> recovery(@RequestBody Student Student) throws IOException {
