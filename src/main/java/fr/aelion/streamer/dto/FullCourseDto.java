@@ -22,6 +22,4 @@ public class FullCourseDto {
     private List<ModuleDto> modules = new ArrayList<ModuleDto>();
 
 
-
-
 }

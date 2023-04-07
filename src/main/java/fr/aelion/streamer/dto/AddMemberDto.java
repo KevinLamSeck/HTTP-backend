@@ -22,11 +22,11 @@ public class AddMemberDto {
     private String phoneNumber;
 
     @NotBlank(message = "login cannot be null")
-    @Size(min = 8, message="Login must have at least 8 chars")
+    @Size(min = 8, message = "Login must have at least 8 chars")
     private String login;
 
     @NotBlank(message = "password cannot be null")
-    @Size(min = 8, message="Password must have at least 8 chars")
+    @Size(min = 8, message = "Password must have at least 8 chars")
     //@Pattern(regexp = "/^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/")
     private String password;
 }

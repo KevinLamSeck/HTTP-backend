@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
 public class CourseController {
     @Autowired
     private CourseService service;
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<FullCourseDto> findAll() {
@@ -31,6 +32,7 @@ public class CourseController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable() int id) {
         try {

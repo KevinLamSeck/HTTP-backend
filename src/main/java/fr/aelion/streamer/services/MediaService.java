@@ -13,13 +13,13 @@ import java.util.List;
 public class MediaService {
 
     @Autowired
-    private MediaRepository repository;
-    @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    private MediaRepository repository;
 
     public List<MediaDto> findAll() {
         List<Media> medias = repository.findAll();
-        List<MediaDto> mediasDto = medias.stream().map(s->{
+        List<MediaDto> mediasDto = medias.stream().map(s -> {
             MediaDto mediaDto = modelMapper.map(s, MediaDto.class);
             return mediaDto;
         }).toList();

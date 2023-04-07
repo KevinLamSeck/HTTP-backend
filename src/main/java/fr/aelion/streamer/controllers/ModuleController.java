@@ -28,8 +28,9 @@ public class ModuleController {
         try {
             return ResponseEntity.ok(moduleService.findOne(id));
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>( "Module with " + id + " was not found", HttpStatus.NOT_FOUND);
-        }}
+            return new ResponseEntity<>("Module with " + id + " was not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping
     public ResponseEntity<ModuleDto> add(@RequestBody ModuleDto module) {

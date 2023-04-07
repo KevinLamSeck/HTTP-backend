@@ -17,6 +17,7 @@ public class MemberDto {
     private String email;
 
     private String phoneNumber;
+
     private MemberType role;
 
     private String login;

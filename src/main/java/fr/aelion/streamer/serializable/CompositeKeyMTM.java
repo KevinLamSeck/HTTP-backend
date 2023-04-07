@@ -6,7 +6,7 @@ import fr.aelion.streamer.entities.Module;
 import java.io.Serializable;
 
 public class CompositeKeyMTM implements Serializable {
-        private Media media;
-        private Module module;
-    }
+    private Media media;
+    private Module module;
+}
 

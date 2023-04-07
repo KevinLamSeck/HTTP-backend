@@ -6,7 +6,7 @@ import java.util.Set;
 public class CourseDto {
     private int id;
     private String title;
-    private Boolean published=false;
+    private Boolean published = false;
 
     private LocalDate createdAt;
 

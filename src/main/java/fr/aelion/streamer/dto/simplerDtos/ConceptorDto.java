@@ -13,8 +13,8 @@ public class ConceptorDto extends MemberDto {
 
     private List<CourseDto> courses = new ArrayList<CourseDto>();
 
-    private List<ModuleDto> modules =new ArrayList<ModuleDto>();
+    private List<ModuleDto> modules = new ArrayList<ModuleDto>();
 
-    private List<MediaDto> medias=new ArrayList<MediaDto>();
+    private List<MediaDto> medias = new ArrayList<MediaDto>();
 
 }

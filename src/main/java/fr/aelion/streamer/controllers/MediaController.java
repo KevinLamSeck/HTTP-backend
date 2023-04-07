@@ -28,7 +28,7 @@ public class MediaController {
         try {
             return ResponseEntity.ok(mediaService.findOne(id));
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>( "Media with " + id + " was not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Media with " + id + " was not found", HttpStatus.NOT_FOUND);
         }
     }
 }

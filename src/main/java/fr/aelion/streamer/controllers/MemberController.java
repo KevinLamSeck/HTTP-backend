@@ -31,12 +31,13 @@ public class MemberController {
     public List<MemberDto> findAll() {
         return memberService.findAll();
     }
+
     @GetMapping("{id}") // GET http://127.0.0.1:5000/api/v1/students/1
     public ResponseEntity<?> findOne(@PathVariable int id) {
         try {
             return ResponseEntity.ok(memberService.findOne(id));
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>( "Member with " + id + " was not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Member with " + id + " was not found", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -53,6 +54,7 @@ public class MemberController {
     /**
      * POST a new student
      * uri : POST http://127.0.0.1:5000/api/v1/students
+     *
      * @param member
      * @return
      */
@@ -61,7 +63,7 @@ public class MemberController {
         try {
             Member newMember = memberService.add(member);
             return ResponseEntity.created(null).body(newMember);
-        } catch(EmailAlreadyExistsException e) {
+        } catch (EmailAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.reject());
         } catch (LoginAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body((e.reject()));
@@ -69,13 +71,14 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> update(@RequestBody Member member) {
         try {
             memberService.update(member);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -86,7 +89,7 @@ public class MemberController {
         try {
             memberService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -110,7 +113,7 @@ public class MemberController {
     @PostMapping("recovery")
     public ResponseEntity<?> recovery(@RequestBody Member Member) throws IOException {
         String response = (this.memberService.recovery(Member.getLogin(), Member.getEmail()));
-        if(response==null){
+        if (response == null) {
             return ResponseEntity.notFound().build();
         }
         ObjectMapper objectMapper = new ObjectMapper();

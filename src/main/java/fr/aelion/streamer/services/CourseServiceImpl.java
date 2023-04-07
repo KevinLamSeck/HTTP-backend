@@ -25,21 +25,19 @@ import java.util.stream.Collectors;
 @Service
 public class CourseServiceImpl implements CourseService {
     @Autowired
+    ModelMapper modelMapper;
+    @Autowired
     private CourseRepository repository;
     @Autowired
     private CourseToModuleRepository courseToModuleRepository;
-
     @Autowired
     private MediaRepository mediaRepository;
-
     @Autowired
     private ModuleRepository moduleRepository;
     @Autowired
     private ModuleService moduleService;
     @Autowired
     private ConvertDtoService convertDtoService;
-    @Autowired
-    ModelMapper modelMapper;
 
     public List<FullCourseDto> findAll() {
         var fullCourses = repository.findAll()
@@ -145,7 +143,7 @@ public class CourseServiceImpl implements CourseService {
 //            course.getModules().forEach((mDto -> {
 //
 //            });
-           // finalNewCourse.setModules(courseModules);
+            // finalNewCourse.setModules(courseModules);
         }
         return modelMapper.map(newCourse, FullCourseDto.class);
     }
@@ -164,8 +162,6 @@ public class CourseServiceImpl implements CourseService {
         return LocalTime.MIN.plusSeconds(timeAsLong).toString();
 
     }
-
-
 
 
 }
