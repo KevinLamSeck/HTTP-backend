@@ -1,8 +1,10 @@
 package fr.aelion.streamer.dto;
 
+import fr.aelion.streamer.dto.conceptorDtos.ModuleDto;
 import fr.aelion.streamer.entities.Course;
 import fr.aelion.streamer.entities.CourseToModule;
 import fr.aelion.streamer.entities.Module;
+import fr.aelion.streamer.entities.ModuleToMedia;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,17 +22,9 @@ public class FullCourseDto {
 
     private String objective;
 
-    private Set<CourseToModuleDto> modules = new HashSet<>();
+    private List<ModuleDto> modules = new ArrayList<ModuleDto>();
 
-    public List<Module> getModuleList(){//fonction qui renvois directement tout les modules plutot que la table de jointure
-        List<Module> newModulesList = new ArrayList<>();
-        for (CourseToModuleDto courseToModule : this.modules)
-        {
-            Module mod = courseToModule.getModule();
-            newModulesList.add(mod);
-        }
-        return newModulesList;
-    }
+
 
 
 }

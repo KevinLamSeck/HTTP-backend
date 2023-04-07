@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer> {
     public Student findByEmail(String email);
@@ -26,7 +27,7 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     )
     public Student nativeByEmailOrLogin(@Param("email") String email, @Param("login") String login);
 
-     Optional<Student> findByLoginAndPassword(String login, String password);
-
-     Optional<Student> findByLoginAndEmail(String login, String email);
+    @CrossOrigin
+    @Query("SELECT u FROM Student u WHERE u.login = :login AND u.password = :password")
+    Optional<Student> findByLoginAndPassword(@Param("login") String login, @Param("password") String password);
 }

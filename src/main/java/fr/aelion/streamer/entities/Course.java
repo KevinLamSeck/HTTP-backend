@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,7 +36,7 @@ public class Course {
     private Student creator;
 
     @OneToMany(mappedBy = "course")
-    private Set<CourseToModule> modules;
+    private List<CourseToModule> modules = new ArrayList<CourseToModule>();
 
     public Course() {
         this.createdAt = LocalDate.now();
