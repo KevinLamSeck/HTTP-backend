@@ -1,10 +1,6 @@
 package fr.aelion.streamer.dto;
 
-import fr.aelion.streamer.dto.conceptorDtos.ModuleDto;
-import fr.aelion.streamer.entities.Course;
-import fr.aelion.streamer.entities.CourseToModule;
-import fr.aelion.streamer.entities.Module;
-import fr.aelion.streamer.entities.ModuleToMedia;
+import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import lombok.Getter;
 import lombok.Setter;
 

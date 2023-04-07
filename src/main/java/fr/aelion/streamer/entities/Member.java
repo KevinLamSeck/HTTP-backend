@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name="member")
 @Getter
 @Setter
-public class Student {//s'apelle member dans la bdd maintenant
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

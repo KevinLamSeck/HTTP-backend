@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AddStudentDto {
+public class AddMemberDto {
     @NotBlank(message = "Lastname cannot be null")
     private String lastName;
 

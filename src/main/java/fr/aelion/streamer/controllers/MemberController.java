@@ -1,75 +1,68 @@
 package fr.aelion.streamer.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.aelion.streamer.dto.AddStudentDto;
-import fr.aelion.streamer.dto.SimpleStudentDto;
-import fr.aelion.streamer.dto.SimpleStudentProjection;
-import fr.aelion.streamer.dto.conceptorDtos.StudentDto;
-import fr.aelion.streamer.entities.Student;
+import fr.aelion.streamer.dto.AddMemberDto;
+import fr.aelion.streamer.dto.SimpleMemberDto;
+import fr.aelion.streamer.dto.SimpleMemberProjection;
+import fr.aelion.streamer.dto.simplerDtos.MemberDto;
+import fr.aelion.streamer.entities.Member;
 import fr.aelion.streamer.services.exceptions.EmailAlreadyExistsException;
 import fr.aelion.streamer.services.exceptions.LoginAlreadyExistsException;
 import jakarta.validation.Valid;
-import org.apache.tomcat.util.json.JSONFilter;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JacksonJsonParser;
-import org.springframework.boot.json.JsonParser;
-import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import fr.aelion.streamer.services.StudentService;
+import fr.aelion.streamer.services.MemberService;
 
 @RestController
 @RequestMapping("api/v1/students") // http://127.0.0.1:8080/api/v1/students
 @CrossOrigin
-public class StudentController {
+public class MemberController {
     @Autowired
-    private StudentService studentService;
+    private MemberService memberService;
 
     @GetMapping
-    public List<StudentDto> findAll() {
-        return studentService.findAll();
+    public List<MemberDto> findAll() {
+        return memberService.findAll();
     }
     @GetMapping("{id}") // GET http://127.0.0.1:5000/api/v1/students/1
     public ResponseEntity<?> findOne(@PathVariable int id) {
         try {
-            return ResponseEntity.ok(studentService.findOne(id));
+            return ResponseEntity.ok(memberService.findOne(id));
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>( "Student with " + id + " was not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>( "Member with " + id + " was not found", HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("simple")
-    public List<SimpleStudentProjection> findSimpleStudents() {
-        return studentService.fromProjection();
+    public List<SimpleMemberProjection> findSimpleMembers() {
+        return memberService.fromProjection();
     }
 
     @GetMapping("dto")
-    public List<SimpleStudentDto> simpleStudentDtos() {
-        return studentService.findSimpleStudents();
+    public List<SimpleMemberDto> simpleMemberDtos() {
+        return memberService.findSimpleMembers();
     }
 
     /**
      * POST a new student
      * uri : POST http://127.0.0.1:5000/api/v1/students
-     * @param student
+     * @param member
      * @return
      */
     @PostMapping
-    public ResponseEntity<?> add(@Valid @RequestBody AddStudentDto student) {
+    public ResponseEntity<?> add(@Valid @RequestBody AddMemberDto member) {
         try {
-            Student newStudent = studentService.add(student);
-            return ResponseEntity.created(null).body(newStudent);
+            Member newMember = memberService.add(member);
+            return ResponseEntity.created(null).body(newMember);
         } catch(EmailAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.reject());
         } catch (LoginAlreadyExistsException e) {
@@ -80,9 +73,9 @@ public class StudentController {
     }
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> update(@RequestBody Student student) {
+    public ResponseEntity<?> update(@RequestBody Member member) {
         try {
-            studentService.update(student);
+            memberService.update(member);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch(Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -93,7 +86,7 @@ public class StudentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> singleDelete(@PathVariable int id) {
         try {
-            studentService.delete(id);
+            memberService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch(Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -103,13 +96,13 @@ public class StudentController {
     @DeleteMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> multipleDelete(@RequestBody Set<Integer> ids) {
-        return ResponseEntity.ok(studentService.multipleDelete(ids));
+        return ResponseEntity.ok(memberService.multipleDelete(ids));
     }
 
 
     @PostMapping("byLoginAndPassword")
-    public ResponseEntity<?> findByLoginAndPassword(@RequestBody Student Student) {
-        return this.studentService.findByLoginAndPassword(Student.getLogin(), Student.getPassword())
+    public ResponseEntity<?> findByLoginAndPassword(@RequestBody Member Member) {
+        return this.memberService.findByLoginAndPassword(Member.getLogin(), Member.getPassword())
                 .map(u -> {
                     return ResponseEntity.ok(u);
                 })
@@ -117,8 +110,8 @@ public class StudentController {
     }
 
     @PostMapping("recovery")
-    public ResponseEntity<?> recovery(@RequestBody Student Student) throws IOException {
-        String response = (this.studentService.recovery(Student.getLogin(), Student.getEmail()));
+    public ResponseEntity<?> recovery(@RequestBody Member Member) throws IOException {
+        String response = (this.memberService.recovery(Member.getLogin(), Member.getEmail()));
         if(response==null){
             return ResponseEntity.notFound().build();
         }

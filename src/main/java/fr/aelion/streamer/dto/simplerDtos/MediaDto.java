@@ -1,4 +1,4 @@
-package fr.aelion.streamer.dto.conceptorDtos;
+package fr.aelion.streamer.dto.simplerDtos;
 
 import fr.aelion.streamer.dto.TypeMediaDto;
 import lombok.Getter;

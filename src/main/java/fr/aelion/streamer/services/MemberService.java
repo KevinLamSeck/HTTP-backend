@@ -1,16 +1,15 @@
 package fr.aelion.streamer.services;
 
-import fr.aelion.streamer.dto.AddStudentDto;
-import fr.aelion.streamer.dto.SimpleStudentDto;
-import fr.aelion.streamer.dto.SimpleStudentProjection;
-import fr.aelion.streamer.dto.conceptorDtos.StudentDto;
-import fr.aelion.streamer.entities.Student;
+import fr.aelion.streamer.dto.AddMemberDto;
+import fr.aelion.streamer.dto.SimpleMemberDto;
+import fr.aelion.streamer.dto.SimpleMemberProjection;
+import fr.aelion.streamer.dto.simplerDtos.MemberDto;
+import fr.aelion.streamer.entities.Member;
 import fr.aelion.streamer.enumFolder.MemberType;
-import fr.aelion.streamer.repositories.StudentRepository;
+import fr.aelion.streamer.repositories.MemberRepository;
 import fr.aelion.streamer.services.exceptions.EmailAlreadyExistsException;
 import fr.aelion.streamer.services.exceptions.LoginAlreadyExistsException;
 import org.modelmapper.ModelMapper;
-import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,27 +19,27 @@ import java.util.*;
 import java.util.stream.Collectors;
 @CrossOrigin
 @Service
-public class StudentService {
+public class MemberService {
     @Autowired
-    private StudentRepository repository;
+    private MemberRepository repository;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<StudentDto> findAll() {
-        List<Student> students = repository.findAll();
-        List<StudentDto> studentsDTO = students.stream().map(s->{
-            StudentDto studentDto = modelMapper.map(s, StudentDto.class);
-            return studentDto;
+    public List<MemberDto> findAll() {
+        List<Member> members = repository.findAll();
+        List<MemberDto> memberDtos = members.stream().map(s->{
+            MemberDto memberDto = modelMapper.map(s, MemberDto.class);
+            return memberDto;
         }).toList();
-        return studentsDTO;
+        return memberDtos;
     }
 
-    public List<SimpleStudentDto> findSimpleStudents() {
+    public List<SimpleMemberDto> findSimpleMembers() {
         return repository.findAll()
                 .stream()
                 .map(s -> {
-                    SimpleStudentDto dto = new SimpleStudentDto();
+                    SimpleMemberDto dto = new SimpleMemberDto();
                     dto.setId(s.getId());
                     dto.setLastName(s.getLastName());
                     dto.setFirstName(s.getFirstName());
@@ -50,34 +49,34 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
-    public List<SimpleStudentProjection> fromProjection() {
-        return repository.getSimpleStudents();
+    public List<SimpleMemberProjection> fromProjection() {
+        return repository.getSimpleMembers();
     }
 
-    public Student add(AddStudentDto student) throws Exception {
-       Student anyStudent = repository.findByEmail(student.getEmail());
-        if (anyStudent != null) {
-            throw new EmailAlreadyExistsException("Email " + student.getEmail() + " already exists");
+    public Member add(AddMemberDto member) throws Exception {
+       Member anyMember = repository.findByEmail(member.getEmail());
+        if (anyMember != null) {
+            throw new EmailAlreadyExistsException("Email " + member.getEmail() + " already exists");
         }
-        anyStudent = repository.findByLogin(student.getLogin());
-        if (anyStudent != null) {
-            throw new LoginAlreadyExistsException("Login " + student.getLogin() + " already exists");
+        anyMember = repository.findByLogin(member.getLogin());
+        if (anyMember != null) {
+            throw new LoginAlreadyExistsException("Login " + member.getLogin() + " already exists");
         }
-        Student newStudent = modelMapper.map(student, Student.class);
-        newStudent.setRole(MemberType.STUDENT);
-        newStudent = (Student) repository.save(newStudent);
+        Member newMember = modelMapper.map(member, Member.class);
+        newMember.setRole(MemberType.STUDENT);
+        newMember = (Member) repository.save(newMember);
 
-        return newStudent;
+        return newMember;
     }
 
-    public void update(Student student) throws Exception {
+    public void update(Member member) throws Exception {
         try {
-            repository.save(student);
+            repository.save(member);
         } catch(Exception e) {
-            throw new Exception("Something went wrong while updating Student");
+            throw new Exception("Something went wrong while updating Member");
         }
     }
-    public Student findOne(int id) {
+    public Member findOne(int id) {
         return repository.findById(id)
                 .map(s -> s)
                 .orElseThrow();
@@ -85,8 +84,8 @@ public class StudentService {
 
     public void delete(int id) {
         try {
-            var student = this.findOne(id);
-            repository.delete(student);
+            var member = this.findOne(id);
+            repository.delete(member);
         } catch (NoSuchElementException e) {
             throw e;
         }
@@ -108,15 +107,15 @@ public class StudentService {
     }
 
     @CrossOrigin
-    public Optional<Student> findByLoginAndPassword(String login, String password) {
+    public Optional<Member> findByLoginAndPassword(String login, String password) {
         return repository.findByLoginAndPassword(login, password);
     }
 
     public String recovery(String login, String email) {
-        Optional<Student> memberOpt = repository.findByLoginAndEmail(login, email);
+        Optional<Member> memberOpt = repository.findByLoginAndEmail(login, email);
         if(!memberOpt.isEmpty()){
             String password = passwordGenerator();
-            Student member = memberOpt.get();
+            Member member = memberOpt.get();
             member.setPassword(password);
             repository.save(member);
             return password;

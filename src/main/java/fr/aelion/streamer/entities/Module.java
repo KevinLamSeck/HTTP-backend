@@ -21,7 +21,7 @@ public class Module {
     private String objective;
 
     @ManyToOne()
-    private Student creator;
+    private Member creator;
 
     @OneToMany(mappedBy = "module")
     private List<CourseToModule> courses;
