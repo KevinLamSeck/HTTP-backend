@@ -34,7 +34,6 @@ public class Media {
     private Student creator;
 
     @ManyToOne
-    @JoinColumn(name = "typemedia_id", nullable = false)
     private TypeMedia typeMedia;
 
     @OneToMany(mappedBy = "media")

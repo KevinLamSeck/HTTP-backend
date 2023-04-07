@@ -19,7 +19,7 @@ public class TypeMedia {
     @Column(nullable = false)
     private String title;
 
-    @OneToMany
+    @OneToMany(mappedBy = "typeMedia")
     private List<Media> medias;
 
 }
