@@ -122,7 +122,6 @@ public class StudentController {
             return ResponseEntity.notFound().build();
         }
         ObjectMapper objectMapper = new ObjectMapper();
-        String aaaaa = "AAAAA";
-        return ResponseEntity.ok(objectMapper.writeValueAsString(aaaaa));
+        return ResponseEntity.ok(objectMapper.writeValueAsString(response));
     }
 }
