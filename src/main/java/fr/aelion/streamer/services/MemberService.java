@@ -108,7 +108,10 @@ public class MemberService {
 
     @CrossOrigin
     public Optional<MemberDto> findByLoginAndPasswordSimpler(String login, String password) {
-        Optional<Member> member = repository.findByLoginAndPassword(login, password);
+        return memberToMemberDto(repository.findByLoginAndPassword(login, password));
+    }
+
+    private Optional<MemberDto> memberToMemberDto(Optional<Member> member) {
         if(member.isEmpty()){
             return Optional.empty();
         }
