@@ -1,8 +1,8 @@
 package fr.aelion.streamer.services;
 
 import fr.aelion.streamer.dto.FullCourseDto;
-import fr.aelion.streamer.dto.conceptorDtos.MediaDto;
-import fr.aelion.streamer.dto.conceptorDtos.ModuleDto;
+import fr.aelion.streamer.dto.simplerDtos.MediaDto;
+import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import fr.aelion.streamer.entities.*;
 import fr.aelion.streamer.entities.Module;
 import org.modelmapper.ModelMapper;

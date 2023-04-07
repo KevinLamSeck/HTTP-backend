@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimpleStudentDto {
+public class SimpleMemberDto {
     private int id;
     private String lastName;
     private String firstName;

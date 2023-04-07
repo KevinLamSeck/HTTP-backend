@@ -1,6 +1,6 @@
 package fr.aelion.streamer.dto;
 
-public interface SimpleStudentProjection {
+public interface SimpleMemberProjection {
     Integer getId();
     String getLastName();
 

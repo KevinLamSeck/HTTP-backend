@@ -1,18 +1,12 @@
-package fr.aelion.streamer.dto.conceptorDtos;
+package fr.aelion.streamer.dto.simplerDtos;
 
-import fr.aelion.streamer.dto.FullCourseDto;
-import fr.aelion.streamer.dto.conceptorDtos.MediaDto;
-import fr.aelion.streamer.dto.conceptorDtos.ModuleDto;
 import fr.aelion.streamer.enumFolder.MemberType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
-public class StudentDto {
+public class MemberDto {
 
     private int id;
 

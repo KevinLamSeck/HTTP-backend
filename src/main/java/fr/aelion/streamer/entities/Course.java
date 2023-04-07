@@ -3,12 +3,10 @@ package fr.aelion.streamer.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="course")
@@ -33,7 +31,7 @@ public class Course {
     private String objective;
 
     @ManyToOne()
-    private Student creator;
+    private Member creator;
 
     @OneToMany(mappedBy = "course")
     private List<CourseToModule> modules = new ArrayList<CourseToModule>();

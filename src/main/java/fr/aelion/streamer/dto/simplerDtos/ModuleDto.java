@@ -1,15 +1,10 @@
-package fr.aelion.streamer.dto.conceptorDtos;
+package fr.aelion.streamer.dto.simplerDtos;
 
-import fr.aelion.streamer.dto.ModuleToMediaDto;
-import fr.aelion.streamer.entities.Media;
-import fr.aelion.streamer.entities.Module;
-import fr.aelion.streamer.entities.ModuleToMedia;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter

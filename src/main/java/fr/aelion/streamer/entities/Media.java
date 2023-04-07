@@ -31,7 +31,7 @@ public class Media {
     private String url;
 
     @ManyToOne()
-    private Student creator;
+    private Member creator;
 
     @ManyToOne
     private TypeMedia typeMedia;

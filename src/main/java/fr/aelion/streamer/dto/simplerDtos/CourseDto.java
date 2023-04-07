@@ -1,8 +1,4 @@
-package fr.aelion.streamer.dto.conceptorDtos;
-
-import fr.aelion.streamer.entities.CourseToModule;
-import fr.aelion.streamer.entities.Student;
-import jakarta.persistence.*;
+package fr.aelion.streamer.dto.simplerDtos;
 
 import java.time.LocalDate;
 import java.util.Set;

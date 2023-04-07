@@ -1,9 +1,9 @@
 package fr.aelion.streamer.services;
 
-import fr.aelion.streamer.dto.conceptorDtos.MediaDto;
-import fr.aelion.streamer.dto.conceptorDtos.StudentDto;
+import fr.aelion.streamer.dto.simplerDtos.MediaDto;
+import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.entities.Media;
-import fr.aelion.streamer.entities.Student;
+import fr.aelion.streamer.entities.Member;
 import fr.aelion.streamer.repositories.MediaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
