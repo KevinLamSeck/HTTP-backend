@@ -30,4 +30,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     @CrossOrigin
     @Query("SELECT u FROM Student u WHERE u.login = :login AND u.password = :password")
     Optional<Student> findByLoginAndPassword(@Param("login") String login, @Param("password") String password);
+
+    Optional<Student> findByLoginAndEmail(String login, String email);
 }
