@@ -8,11 +8,14 @@ import fr.aelion.streamer.repositories.StudentRepository;
 import fr.aelion.streamer.services.exceptions.EmailAlreadyExistsException;
 import fr.aelion.streamer.services.exceptions.LoginAlreadyExistsException;
 import org.modelmapper.ModelMapper;
+import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 @Service
 public class StudentService {
@@ -99,5 +102,30 @@ public class StudentService {
 
     public Optional<Student> findByLoginAndPassword(String login, String password) {
         return repository.findByLoginAndPassword(login, password);
+    }
+
+    public String recovery(String login, String email) {
+        Optional<Student> memberOpt = repository.findByLoginAndEmail(login, email);
+        if(!memberOpt.isEmpty()){
+            String password = passwordGenerator();
+            Student member = memberOpt.get();
+            member.setPassword(password);
+            repository.save(member);
+            return password;
+        }
+        return null;
+    }
+
+    private String passwordGenerator() {
+        SecureRandom randomGen = new SecureRandom();
+        randomGen.setSeed(randomGen.generateSeed(8));
+        StringBuilder res = new StringBuilder();
+        while (res.length()<10){
+            Character c = Character.valueOf( (char) (randomGen.nextInt()%26+65));
+            if (Character.isLetterOrDigit(c)){
+                res.append(c);
+            }
+        }
+        return res.toString();
     }
 }

@@ -1,5 +1,6 @@
 package fr.aelion.streamer.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.aelion.streamer.dto.AddStudentDto;
 import fr.aelion.streamer.dto.SimpleStudentDto;
 import fr.aelion.streamer.dto.SimpleStudentProjection;
@@ -7,12 +8,20 @@ import fr.aelion.streamer.entities.Student;
 import fr.aelion.streamer.services.exceptions.EmailAlreadyExistsException;
 import fr.aelion.streamer.services.exceptions.LoginAlreadyExistsException;
 import jakarta.validation.Valid;
+import org.apache.tomcat.util.json.JSONFilter;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.boot.json.JsonParser;
+import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -103,5 +112,16 @@ public class StudentController {
                     return ResponseEntity.ok(u);
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+
+    @PostMapping("recovery")
+    public ResponseEntity<?> recovery(@RequestBody Student Student) throws IOException {
+        String response = (this.studentService.recovery(Student.getLogin(), Student.getEmail()));
+        if(response==null){
+            return ResponseEntity.notFound().build();
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        return ResponseEntity.ok(objectMapper.writeValueAsString(response));
     }
 }
