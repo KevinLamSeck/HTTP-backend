@@ -3,8 +3,8 @@ package fr.aelion.streamer.services;
 import fr.aelion.streamer.dto.FullCourseDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
-import fr.aelion.streamer.entities.*;
 import fr.aelion.streamer.entities.Module;
+import fr.aelion.streamer.entities.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +44,7 @@ public class ConvertDtoService {
         for (CourseToModule courseToModule : cTmList) {
 
             Module mod = courseToModule.getModule();//obtiens le module
-            ModuleDto newModule = modelMapper.map(mod,ModuleDto.class);//le transforme en DTO avec les données de bases
+            ModuleDto newModule = modelMapper.map(mod, ModuleDto.class);//le transforme en DTO avec les données de bases
             newModule.setOrder(courseToModule.getOrderModule());//ajoute l'order
             newModule.setMedias(getMediaListDto(mod.getMedias()));//ajoute la liste des medias (voir getMedialistDto())
 
@@ -58,7 +58,7 @@ public class ConvertDtoService {
         List<MediaDto> newMediaList = new ArrayList<>();
         for (ModuleToMedia moduleToMedia : mTmList) {
             Media media = moduleToMedia.getMedia();//obtiens le media
-            MediaDto newMedia = modelMapper.map(media,MediaDto.class);//le transforme en DTO avec les données de bases
+            MediaDto newMedia = modelMapper.map(media, MediaDto.class);//le transforme en DTO avec les données de bases
             newMedia.setOrder(moduleToMedia.getOrderMedia());//ajoute l'order
 
             newMediaList.add(newMedia);

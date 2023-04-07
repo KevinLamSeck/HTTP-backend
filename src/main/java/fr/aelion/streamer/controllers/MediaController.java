@@ -1,9 +1,7 @@
 package fr.aelion.streamer.controllers;
 
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
-import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.services.MediaService;
-import fr.aelion.streamer.services.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +28,7 @@ public class MediaController {
         try {
             return ResponseEntity.ok(mediaService.findOne(id));
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>( "Media with " + id + " was not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Media with " + id + " was not found", HttpStatus.NOT_FOUND);
         }
     }
 }

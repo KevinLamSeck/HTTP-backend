@@ -1,9 +1,7 @@
 package fr.aelion.streamer.services;
 
-import fr.aelion.streamer.dto.FullCourseDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
-import fr.aelion.streamer.entities.CourseToModule;
 import fr.aelion.streamer.entities.Media;
 import fr.aelion.streamer.entities.Module;
 import fr.aelion.streamer.entities.ModuleToMedia;
@@ -21,18 +19,17 @@ import java.util.List;
 public class ModuleService {
 
     @Autowired
+    ModelMapper modelMapper;
+    @Autowired
     private ModuleRepository repository;
     @Autowired
     private MediaRepository mediaRepository;
     @Autowired
     private ModuleToMediaRepository moduleToMediaRepository;
 
-    @Autowired
-    ModelMapper modelMapper;
-
     public List<ModuleDto> findAll() {
         List<Module> modules = repository.findAll();
-        List<ModuleDto> modulesDto = modules.stream().map(s->{
+        List<ModuleDto> modulesDto = modules.stream().map(s -> {
             ModuleDto moduleDto = modelMapper.map(s, ModuleDto.class);
             return moduleDto;
         }).toList();

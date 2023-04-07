@@ -13,13 +13,12 @@ public class ModuleDto {
     private String name;
     private String objective;
 
-    private List<MediaDto> medias= new ArrayList<>();
+    private List<MediaDto> medias = new ArrayList<>();
 
     private String totalTime;
     private Integer order = null;
 
     private boolean isSelected = false;
-
 
 
 }

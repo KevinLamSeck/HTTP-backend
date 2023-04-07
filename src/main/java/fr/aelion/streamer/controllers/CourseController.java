@@ -2,7 +2,6 @@ package fr.aelion.streamer.controllers;
 
 import fr.aelion.streamer.dto.CourseAddDto;
 import fr.aelion.streamer.dto.FullCourseDto;
-import fr.aelion.streamer.entities.Course;
 import fr.aelion.streamer.services.interfaces.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +16,7 @@ import java.util.NoSuchElementException;
 public class CourseController {
     @Autowired
     private CourseService service;
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<FullCourseDto> findAll() {
@@ -32,6 +32,7 @@ public class CourseController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable() int id) {
         try {

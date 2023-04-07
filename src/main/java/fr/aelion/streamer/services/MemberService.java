@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.security.SecureRandom;
 import java.util.*;
 import java.util.stream.Collectors;
+
 @CrossOrigin
 @Service
 public class MemberService {
@@ -28,7 +29,7 @@ public class MemberService {
 
     public List<MemberDto> findAll() {
         List<Member> members = repository.findAll();
-        List<MemberDto> memberDtos = members.stream().map(s->{
+        List<MemberDto> memberDtos = members.stream().map(s -> {
             MemberDto memberDto = modelMapper.map(s, MemberDto.class);
             return memberDto;
         }).toList();
@@ -54,7 +55,7 @@ public class MemberService {
     }
 
     public Member add(AddMemberDto member) throws Exception {
-       Member anyMember = repository.findByEmail(member.getEmail());
+        Member anyMember = repository.findByEmail(member.getEmail());
         if (anyMember != null) {
             throw new EmailAlreadyExistsException("Email " + member.getEmail() + " already exists");
         }
@@ -72,10 +73,11 @@ public class MemberService {
     public void update(Member member) throws Exception {
         try {
             repository.save(member);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new Exception("Something went wrong while updating Member");
         }
     }
+
     public Member findOne(int id) {
         return repository.findById(id)
                 .map(s -> s)
@@ -97,7 +99,7 @@ public class MemberService {
                 .forEach(i -> {
                     try {
                         repository.delete(this.findOne(i));
-                    } catch(NoSuchElementException e) {
+                    } catch (NoSuchElementException e) {
                         nonDeletedIds.add(i);
                     } catch (Exception e) {
                         nonDeletedIds.add(i);
@@ -112,7 +114,7 @@ public class MemberService {
     }
 
     private Optional<MemberDto> memberToMemberDto(Optional<Member> member) {
-        if(member.isEmpty()){
+        if (member.isEmpty()) {
             return Optional.empty();
         }
         MemberDto memberDto = new MemberDto();
@@ -129,7 +131,7 @@ public class MemberService {
 
     public String recovery(String login, String email) {
         Optional<Member> memberOpt = repository.findByLoginAndEmail(login, email);
-        if(!memberOpt.isEmpty()){
+        if (!memberOpt.isEmpty()) {
             String password = passwordGenerator();
             Member member = memberOpt.get();
             member.setPassword(password);
@@ -143,9 +145,9 @@ public class MemberService {
         SecureRandom randomGen = new SecureRandom();
         randomGen.setSeed(randomGen.generateSeed(8));
         StringBuilder res = new StringBuilder();
-        while (res.length()<10){
-            Character c = Character.valueOf( (char) (randomGen.nextInt()%26+65));
-            if (Character.isLetterOrDigit(c)){
+        while (res.length() < 10) {
+            Character c = Character.valueOf((char) (randomGen.nextInt() % 26 + 65));
+            if (Character.isLetterOrDigit(c)) {
                 res.append(c);
             }
         }

@@ -1,6 +1,8 @@
 package fr.aelion.streamer.services;
 
-import fr.aelion.streamer.dto.*;
+import fr.aelion.streamer.dto.CourseAddDto;
+import fr.aelion.streamer.dto.FullCourseDto;
+import fr.aelion.streamer.dto.ModuleAddDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
 import fr.aelion.streamer.entities.Course;
 import fr.aelion.streamer.entities.CourseToModule;
@@ -15,27 +17,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService {
     @Autowired
+    ModelMapper modelMapper;
+    @Autowired
     private CourseRepository repository;
     @Autowired
     private CourseToModuleRepository courseToModuleRepository;
-
     @Autowired
     private MediaRepository mediaRepository;
-
     @Autowired
     private ModuleRepository moduleRepository;
     @Autowired
     private ModuleService moduleService;
     @Autowired
     private ConvertDtoService convertDtoService;
-    @Autowired
-    ModelMapper modelMapper;
 
     public List<FullCourseDto> findAll() {
         var fullCourses = repository.findAll()
@@ -141,7 +143,7 @@ public class CourseServiceImpl implements CourseService {
 //            course.getModules().forEach((mDto -> {
 //
 //            });
-           // finalNewCourse.setModules(courseModules);
+            // finalNewCourse.setModules(courseModules);
         }
         return modelMapper.map(newCourse, FullCourseDto.class);
     }
@@ -160,8 +162,6 @@ public class CourseServiceImpl implements CourseService {
         return LocalTime.MIN.plusSeconds(timeAsLong).toString();
 
     }
-
-
 
 
 }

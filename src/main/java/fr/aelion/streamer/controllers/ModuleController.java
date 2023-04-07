@@ -1,10 +1,6 @@
 package fr.aelion.streamer.controllers;
 
-import fr.aelion.streamer.dto.CourseAddDto;
-import fr.aelion.streamer.dto.FullCourseDto;
-import fr.aelion.streamer.dto.simplerDtos.MediaDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
-import fr.aelion.streamer.services.MediaService;
 import fr.aelion.streamer.services.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +28,9 @@ public class ModuleController {
         try {
             return ResponseEntity.ok(moduleService.findOne(id));
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>( "Module with " + id + " was not found", HttpStatus.NOT_FOUND);
-        }}
+            return new ResponseEntity<>("Module with " + id + " was not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PostMapping
     public ResponseEntity<ModuleDto> add(@RequestBody ModuleDto module) {

@@ -4,7 +4,6 @@ import fr.aelion.streamer.dto.CourseAddDto;
 import fr.aelion.streamer.dto.FullCourseDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CourseService {
     List<FullCourseDto> findAll();

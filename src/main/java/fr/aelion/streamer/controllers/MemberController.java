@@ -6,6 +6,7 @@ import fr.aelion.streamer.dto.SimpleMemberDto;
 import fr.aelion.streamer.dto.SimpleMemberProjection;
 import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.entities.Member;
+import fr.aelion.streamer.services.MemberService;
 import fr.aelion.streamer.services.exceptions.EmailAlreadyExistsException;
 import fr.aelion.streamer.services.exceptions.LoginAlreadyExistsException;
 import jakarta.validation.Valid;
@@ -14,13 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
-import fr.aelion.streamer.services.MemberService;
 
 @RestController
 @RequestMapping("api/v1/students") // http://127.0.0.1:8080/api/v1/students
@@ -33,12 +31,13 @@ public class MemberController {
     public List<MemberDto> findAll() {
         return memberService.findAll();
     }
+
     @GetMapping("{id}") // GET http://127.0.0.1:5000/api/v1/students/1
     public ResponseEntity<?> findOne(@PathVariable int id) {
         try {
             return ResponseEntity.ok(memberService.findOne(id));
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>( "Member with " + id + " was not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Member with " + id + " was not found", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -55,6 +54,7 @@ public class MemberController {
     /**
      * POST a new student
      * uri : POST http://127.0.0.1:5000/api/v1/students
+     *
      * @param member
      * @return
      */
@@ -63,7 +63,7 @@ public class MemberController {
         try {
             Member newMember = memberService.add(member);
             return ResponseEntity.created(null).body(newMember);
-        } catch(EmailAlreadyExistsException e) {
+        } catch (EmailAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.reject());
         } catch (LoginAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body((e.reject()));
@@ -71,13 +71,14 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
     @PutMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> update(@RequestBody Member member) {
         try {
             memberService.update(member);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -88,7 +89,7 @@ public class MemberController {
         try {
             memberService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -112,7 +113,7 @@ public class MemberController {
     @PostMapping("recovery")
     public ResponseEntity<?> recovery(@RequestBody Member Member) throws IOException {
         String response = (this.memberService.recovery(Member.getLogin(), Member.getEmail()));
-        if(response==null){
+        if (response == null) {
             return ResponseEntity.notFound().build();
         }
         ObjectMapper objectMapper = new ObjectMapper();
