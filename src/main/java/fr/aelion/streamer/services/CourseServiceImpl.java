@@ -1,6 +1,8 @@
 package fr.aelion.streamer.services;
 
-import fr.aelion.streamer.dto.*;
+import fr.aelion.streamer.dto.CourseAddDto;
+import fr.aelion.streamer.dto.FullCourseDto;
+import fr.aelion.streamer.dto.ModuleAddDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
 import fr.aelion.streamer.entities.Course;
 import fr.aelion.streamer.entities.CourseToModule;
@@ -15,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service

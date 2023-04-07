@@ -6,6 +6,7 @@ import fr.aelion.streamer.dto.SimpleMemberDto;
 import fr.aelion.streamer.dto.SimpleMemberProjection;
 import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.entities.Member;
+import fr.aelion.streamer.services.MemberService;
 import fr.aelion.streamer.services.exceptions.EmailAlreadyExistsException;
 import fr.aelion.streamer.services.exceptions.LoginAlreadyExistsException;
 import jakarta.validation.Valid;
@@ -14,13 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
-import fr.aelion.streamer.services.MemberService;
 
 @RestController
 @RequestMapping("api/v1/students") // http://127.0.0.1:8080/api/v1/students

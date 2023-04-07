@@ -1,9 +1,7 @@
 package fr.aelion.streamer.services;
 
-import fr.aelion.streamer.dto.FullCourseDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
-import fr.aelion.streamer.entities.CourseToModule;
 import fr.aelion.streamer.entities.Media;
 import fr.aelion.streamer.entities.Module;
 import fr.aelion.streamer.entities.ModuleToMedia;

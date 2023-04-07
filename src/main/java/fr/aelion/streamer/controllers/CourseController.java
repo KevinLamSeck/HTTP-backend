@@ -2,7 +2,6 @@ package fr.aelion.streamer.controllers;
 
 import fr.aelion.streamer.dto.CourseAddDto;
 import fr.aelion.streamer.dto.FullCourseDto;
-import fr.aelion.streamer.entities.Course;
 import fr.aelion.streamer.services.interfaces.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

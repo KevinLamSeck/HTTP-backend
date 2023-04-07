@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="course")
+@Table(name = "course")
 @Getter
 @Setter
 @Embeddable
@@ -21,8 +21,8 @@ public class Course {
     private String title;
 
     //@Value("${false}")
-    @Column(columnDefinition = "boolean default false",nullable = false)
-    private Boolean published=false;
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private Boolean published = false;
 
     private LocalDate createdAt;
 
