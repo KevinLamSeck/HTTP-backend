@@ -1,9 +1,9 @@
 package fr.aelion.streamer.controllers;
 
-import fr.aelion.streamer.dto.conceptorDtos.MediaDto;
-import fr.aelion.streamer.dto.conceptorDtos.StudentDto;
+import fr.aelion.streamer.dto.simplerDtos.MediaDto;
+import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.services.MediaService;
-import fr.aelion.streamer.services.StudentService;
+import fr.aelion.streamer.services.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
