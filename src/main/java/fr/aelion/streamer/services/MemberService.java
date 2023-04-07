@@ -107,8 +107,21 @@ public class MemberService {
     }
 
     @CrossOrigin
-    public Optional<Member> findByLoginAndPassword(String login, String password) {
-        return repository.findByLoginAndPassword(login, password);
+    public Optional<MemberDto> findByLoginAndPasswordSimpler(String login, String password) {
+        Optional<Member> member = repository.findByLoginAndPassword(login, password);
+        if(member.isEmpty()){
+            return Optional.empty();
+        }
+        MemberDto memberDto = new MemberDto();
+        memberDto.setId(member.get().getId());
+        memberDto.setPassword(member.get().getPassword());
+        memberDto.setLogin(member.get().getLogin());
+        memberDto.setFirstName(member.get().getFirstName());
+        memberDto.setLastName(member.get().getLastName());
+        memberDto.setPhoneNumber(member.get().getPhoneNumber());
+        memberDto.setEmail(member.get().getEmail());
+        memberDto.setRole(member.get().getRole());
+        return Optional.of(memberDto);
     }
 
     public String recovery(String login, String email) {

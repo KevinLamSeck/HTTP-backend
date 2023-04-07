@@ -102,7 +102,7 @@ public class MemberController {
 
     @PostMapping("byLoginAndPassword")
     public ResponseEntity<?> findByLoginAndPassword(@RequestBody Member Member) {
-        return this.memberService.findByLoginAndPassword(Member.getLogin(), Member.getPassword())
+        return this.memberService.findByLoginAndPasswordSimpler(Member.getLogin(), Member.getPassword())
                 .map(u -> {
                     return ResponseEntity.ok(u);
                 })
