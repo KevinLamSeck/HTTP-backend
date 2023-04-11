@@ -17,7 +17,7 @@ public class FullCourseDto {
     private LocalDate createdAt;
 
     private LocalDate updatedAt;
-
+    private int creator_id;
     private String objective;
 
     private List<ModuleDto> modules = new ArrayList<ModuleDto>();

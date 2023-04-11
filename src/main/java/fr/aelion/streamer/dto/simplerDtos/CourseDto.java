@@ -14,6 +14,7 @@ public class CourseDto {
     private Boolean published = false;
 
     private LocalDate createdAt;
+    private int creator_id;
 
     private LocalDate updatedAt;
 
