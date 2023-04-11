@@ -1,8 +1,11 @@
 package fr.aelion.streamer.services;
 
+import fr.aelion.streamer.dto.ModuleAddDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
+import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import fr.aelion.streamer.entities.Media;
+import fr.aelion.streamer.entities.Member;
 import fr.aelion.streamer.entities.Module;
 import fr.aelion.streamer.entities.ModuleToMedia;
 import fr.aelion.streamer.repositories.MediaRepository;
@@ -26,6 +29,8 @@ public class ModuleService {
     private MediaRepository mediaRepository;
     @Autowired
     private ModuleToMediaRepository moduleToMediaRepository;
+    @Autowired
+    private ConvertDtoService convertDtoService;
 
     public List<ModuleDto> findAll() {
         List<Module> modules = repository.findAll();
@@ -36,28 +41,30 @@ public class ModuleService {
         return modulesDto;
     }
 
-    public Module findOne(int id) {
+    public ModuleDto findOne(int id) {
         return repository.findById(id)
-                .map(s -> s)
+                .map(s -> {
+                    ModuleDto moduleDto = modelMapper.map(s,ModuleDto.class);
+                    moduleDto.setMedias(convertDtoService.getMediaListDto(s.getMedias()));
+                    return moduleDto;
+                })
                 .orElseThrow();
     }
 
-    public ModuleDto add(ModuleDto module) {
+    public ModuleDto add(ModuleAddDto module) {
         var newModule = new Module();
         newModule.setName(module.getName());
         newModule.setObjective(module.getObjective());
-
+        newModule.setCreator(modelMapper.map(module.getCreator(), Member.class));
         newModule = repository.save(newModule);
 
         if (module.getMedias().size() > 0) {
-            Module finalNewModule = newModule;
-            List<ModuleToMedia> moduleMedias = new ArrayList<>();
-
             int i = 0;
-            for (MediaDto mDto : module.getMedias()) {
-                Media newMedia = modelMapper.map(mDto, Media.class);
+            for (MediaDto m : module.getMedias()) {
+                Media newMedia = modelMapper.map(m, Media.class);
+                if ( mediaRepository.getById(m.getId()) == null) {
                 //creer le media
-                newMedia = mediaRepository.save(newMedia);
+                newMedia = mediaRepository.save(newMedia);}
 
                 //creer la table lien entre le module et chaques medias
                 ModuleToMedia moduleToMedia = new ModuleToMedia();

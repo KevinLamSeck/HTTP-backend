@@ -1,6 +1,7 @@
 package fr.aelion.streamer.dto;
 
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
+import fr.aelion.streamer.entities.Member;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class FullCourseDto {
     private LocalDate createdAt;
 
     private LocalDate updatedAt;
-
+    private int creator_id;
     private String objective;
 
     private List<ModuleDto> modules = new ArrayList<ModuleDto>();

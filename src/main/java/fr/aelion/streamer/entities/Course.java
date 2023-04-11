@@ -23,6 +23,8 @@ public class Course {
     //@Value("${false}")
     @Column(columnDefinition = "boolean default false", nullable = false)
     private Boolean published = false;
+    @Column(insertable=false, updatable=false, name="creator_id")
+    private int creator_id; //
 
     private LocalDate createdAt;
 
