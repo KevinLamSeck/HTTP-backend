@@ -148,20 +148,7 @@ public class CourseServiceImpl implements CourseService {
         return modelMapper.map(newCourse, FullCourseDto.class);
     }
 
-    private String convertToTime(List<MediaDto> medias) {
-        Float time = medias.stream()
-                .map(m -> {
-                    m.setTotalTime(LocalTime.MIN.plusSeconds(m.getDuration().longValue()).toString());
-                    return m;
-                })
-                .map(m -> m.getDuration())
-                .reduce(Float.valueOf(0), (subtotal, duration) -> subtotal + duration);
 
-        var timeAsLong = Math.round(time);
-
-        return LocalTime.MIN.plusSeconds(timeAsLong).toString();
-
-    }
 
 
 }

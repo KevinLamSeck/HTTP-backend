@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,10 @@ public class ConvertDtoService {
             newModule.setOrder(courseToModule.getOrderModule());//ajoute l'order
             newModule.setMedias(getMediaListDto(mod.getMedias()));//ajoute la liste des medias (voir getMedialistDto())
 
+            //gestion du temps
+            newModule.setTotalTime(convertToTime(newModule.getMedias()));
+
+
             newModulesList.add(newModule);
         }
         return newModulesList;
@@ -64,5 +69,20 @@ public class ConvertDtoService {
             newMediaList.add(newMedia);
         }
         return newMediaList;
+    }
+
+    private String convertToTime(List<MediaDto> medias) {
+        Float time = medias.stream()
+                .map(m -> {
+                    m.setTotalTime(LocalTime.MIN.plusSeconds(m.getDuration().longValue()).toString());
+                    return m;
+                })
+                .map(m -> m.getDuration())
+                .reduce(Float.valueOf(0), (subtotal, duration) -> subtotal + duration);
+
+        var timeAsLong = Math.round(time);
+
+        return LocalTime.MIN.plusSeconds(timeAsLong).toString();
+
     }
 }
