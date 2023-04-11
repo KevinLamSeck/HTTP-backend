@@ -59,14 +59,12 @@ public class ModuleService {
         newModule = repository.save(newModule);
 
         if (module.getMedias().size() > 0) {
-            Module finalNewModule = newModule;
-            List<ModuleToMedia> moduleMedias = new ArrayList<>();
-
             int i = 0;
             for (MediaDto m : module.getMedias()) {
                 Media newMedia = modelMapper.map(m, Media.class);
+                if ( mediaRepository.getById(m.getId()) == null) {
                 //creer le media
-                newMedia = mediaRepository.save(newMedia);
+                newMedia = mediaRepository.save(newMedia);}
 
                 //creer la table lien entre le module et chaques medias
                 ModuleToMedia moduleToMedia = new ModuleToMedia();
