@@ -1,6 +1,5 @@
 package fr.aelion.streamer.controllers;
 
-import fr.aelion.streamer.dto.ModuleAddDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import fr.aelion.streamer.services.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +33,8 @@ public class ModuleController {
     }
 
     @PostMapping
-    public ResponseEntity<ModuleAddDto> add(@RequestBody ModuleAddDto module) {
-        ModuleAddDto moduleDto = this.moduleService.add(module);
+    public ResponseEntity<ModuleDto> add(@RequestBody ModuleDto module) {
+        ModuleDto moduleDto = this.moduleService.add(module);
         return ResponseEntity.ok(moduleDto);
     }
 

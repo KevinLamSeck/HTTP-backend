@@ -1,11 +1,8 @@
 package fr.aelion.streamer.services;
 
-import fr.aelion.streamer.dto.ModuleAddDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
-import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import fr.aelion.streamer.entities.Media;
-import fr.aelion.streamer.entities.Member;
 import fr.aelion.streamer.entities.Module;
 import fr.aelion.streamer.entities.ModuleToMedia;
 import fr.aelion.streamer.repositories.MediaRepository;
@@ -45,12 +42,10 @@ public class ModuleService {
                 .orElseThrow();
     }
 
-    public ModuleAddDto add(ModuleAddDto module) {
+    public ModuleDto add(ModuleDto module) {
         var newModule = new Module();
         newModule.setName(module.getName());
         newModule.setObjective(module.getObjective());
-        MemberDto creator = module.getCreator();
-        newModule.setCreator(modelMapper.map(creator, Member.class));
 
         newModule = repository.save(newModule);
 
@@ -76,7 +71,7 @@ public class ModuleService {
             }
 
         }
-        return modelMapper.map(newModule, ModuleAddDto.class);
+        return modelMapper.map(newModule, ModuleDto.class);
     }
 
 }
