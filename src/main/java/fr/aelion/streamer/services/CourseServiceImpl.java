@@ -3,6 +3,7 @@ package fr.aelion.streamer.services;
 import fr.aelion.streamer.dto.CourseAddDto;
 import fr.aelion.streamer.dto.FullCourseDto;
 import fr.aelion.streamer.dto.ModuleAddDto;
+import fr.aelion.streamer.dto.simplerDtos.CourseDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
 import fr.aelion.streamer.entities.Course;
 import fr.aelion.streamer.entities.CourseToModule;
@@ -39,7 +40,7 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private ConvertDtoService convertDtoService;
 
-    public List<FullCourseDto> findAll() {
+    public List<CourseDto> findAll() {
         var fullCourses = repository.findAll()
                 .stream()
                 .map(c -> {
@@ -64,7 +65,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public FullCourseDto findOne(int id) {
+    public CourseDto findOne(int id) {
         return repository.findById(id)
                 .map((c) -> {
                     var fullCourseDto = convertDtoService.convertCourseToDto(c);
