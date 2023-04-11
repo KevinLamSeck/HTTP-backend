@@ -2,6 +2,7 @@ package fr.aelion.streamer.controllers;
 
 import fr.aelion.streamer.dto.CourseAddDto;
 import fr.aelion.streamer.dto.FullCourseDto;
+import fr.aelion.streamer.dto.simplerDtos.CourseDto;
 import fr.aelion.streamer.services.interfaces.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class CourseController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<FullCourseDto> findAll() {
+    public List<CourseDto> findAll() {
         return service.findAll();
     }
 

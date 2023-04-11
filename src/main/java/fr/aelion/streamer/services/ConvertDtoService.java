@@ -1,6 +1,7 @@
 package fr.aelion.streamer.services;
 
 import fr.aelion.streamer.dto.FullCourseDto;
+import fr.aelion.streamer.dto.simplerDtos.CourseDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import fr.aelion.streamer.entities.Module;
@@ -18,11 +19,12 @@ public class ConvertDtoService {
     @Autowired
     ModelMapper modelMapper;
 
-    public FullCourseDto convertCourseToDto(Course course) {
-        FullCourseDto fullCourseDto = new FullCourseDto();
-        fullCourseDto = modelMapper.map(course, FullCourseDto.class);//renseigne les valeurs de base de cours
+    public CourseDto convertCourseToDto(Course course) {
+        CourseDto fullCourseDto = new CourseDto();
+        fullCourseDto = modelMapper.map(course, CourseDto.class);//renseigne les valeurs de base de cours
 
         List<ModuleDto> mdtos = this.getModuleListDto(course.getModules());
+
 
 //        List<ModuleDto> mdtos = this.getModuleList(course.getModules()).stream().map(m -> {//gere la recuperation des modules du cours
 //

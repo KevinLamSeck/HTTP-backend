@@ -1,6 +1,7 @@
 package fr.aelion.streamer.dto;
 
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
+import fr.aelion.streamer.entities.Member;
 import lombok.Getter;
 import lombok.Setter;
 

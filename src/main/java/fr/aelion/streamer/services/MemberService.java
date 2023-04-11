@@ -1,8 +1,11 @@
 package fr.aelion.streamer.services;
 
 import fr.aelion.streamer.dto.AddMemberDto;
+import fr.aelion.streamer.dto.FullCourseDto;
 import fr.aelion.streamer.dto.SimpleMemberDto;
 import fr.aelion.streamer.dto.SimpleMemberProjection;
+import fr.aelion.streamer.dto.simplerDtos.ConceptorDto;
+import fr.aelion.streamer.dto.simplerDtos.CourseDto;
 import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.entities.Member;
 import fr.aelion.streamer.enumFolder.MemberType;
@@ -23,6 +26,8 @@ import java.util.stream.Collectors;
 public class MemberService {
     @Autowired
     private MemberRepository repository;
+    @Autowired
+    private ConvertDtoService convertDtoService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -78,16 +83,25 @@ public class MemberService {
         }
     }
 
-    public Member findOne(int id) {
+    public ConceptorDto findOne(int id) {
         return repository.findById(id)
-                .map(s -> s)
+                .map(s -> {
+                    ConceptorDto conceptorDto = modelMapper.map(s, ConceptorDto.class);
+                    List<CourseDto> courseDtos = new ArrayList<>();
+                    courseDtos = s.getCourses().stream().map((c) -> {
+                        return convertDtoService.convertCourseToDto(c);
+                    }).toList();
+                    conceptorDto.setCourses(courseDtos);
+                    return conceptorDto;
+                })
                 .orElseThrow();
     }
+
 
     public void delete(int id) {
         try {
             var member = this.findOne(id);
-            repository.delete(member);
+            repository.delete(modelMapper.map(member, Member.class));
         } catch (NoSuchElementException e) {
             throw e;
         }
@@ -98,7 +112,7 @@ public class MemberService {
         ids.stream()
                 .forEach(i -> {
                     try {
-                        repository.delete(this.findOne(i));
+                        repository.delete(modelMapper.map(findOne(i), Member.class));
                     } catch (NoSuchElementException e) {
                         nonDeletedIds.add(i);
                     } catch (Exception e) {

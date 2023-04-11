@@ -1,8 +1,13 @@
 package fr.aelion.streamer.dto.simplerDtos;
 
-import java.time.LocalDate;
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+@Getter
+@Setter
 public class CourseDto {
     private int id;
     private String title;
@@ -14,5 +19,5 @@ public class CourseDto {
 
     private String objective;
 
-    private Set<ModuleDto> modules;
+    private List<ModuleDto> modules;
 }
