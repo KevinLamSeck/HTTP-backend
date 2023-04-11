@@ -1,6 +1,8 @@
 package fr.aelion.streamer.controllers;
 
+import fr.aelion.streamer.dto.AddMediaDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
+import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import fr.aelion.streamer.services.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,5 +32,11 @@ public class MediaController {
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>("Media with " + id + " was not found", HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<AddMediaDto> add(@RequestBody AddMediaDto media) {
+        AddMediaDto addMediaDto = this.mediaService.add(media);
+        return ResponseEntity.ok(addMediaDto);
     }
 }
