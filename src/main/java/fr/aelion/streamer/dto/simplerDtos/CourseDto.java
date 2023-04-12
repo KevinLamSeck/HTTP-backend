@@ -20,4 +20,5 @@ public class CourseDto {
     private String objective;
 
     private List<ModuleDto> modules;
+
 }

@@ -20,5 +20,7 @@ public class ModuleDto {
 
     private boolean isSelected = false;
 
+    private MemberDto creator;
+
 
 }
