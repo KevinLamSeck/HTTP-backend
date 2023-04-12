@@ -24,18 +24,6 @@ public class ConvertDtoService {
         fullCourseDto = modelMapper.map(course, CourseDto.class);//renseigne les valeurs de base de cours
 
         List<ModuleDto> mdtos = this.getModuleListDto(course.getModules());
-
-
-//        List<ModuleDto> mdtos = this.getModuleList(course.getModules()).stream().map(m -> {//gere la recuperation des modules du cours
-//
-//            ModuleDto mdto = modelMapper.map(m, ModuleDto.class);//
-//            List<Media> medias = this.getMediaList(m.getMedias());
-//            List<MediaDto> mediaDtos = medias.stream().map(med -> {
-//                return modelMapper.map(med, MediaDto.class);
-//            }).toList();
-//            mdto.setMedias(mediaDtos);
-//            return mdto;
-//        }).toList();
         fullCourseDto.setModules(mdtos);
 
 
