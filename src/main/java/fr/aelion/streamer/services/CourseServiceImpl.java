@@ -1,17 +1,11 @@
 package fr.aelion.streamer.services;
 
-import fr.aelion.streamer.dto.CourseAddDto;
-import fr.aelion.streamer.dto.FullCourseDto;
-import fr.aelion.streamer.dto.ModuleAddDto;
+import fr.aelion.streamer.dto.*;
 import fr.aelion.streamer.dto.simplerDtos.CourseDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
-import fr.aelion.streamer.entities.Course;
-import fr.aelion.streamer.entities.CourseToModule;
+import fr.aelion.streamer.entities.*;
 import fr.aelion.streamer.entities.Module;
-import fr.aelion.streamer.repositories.CourseRepository;
-import fr.aelion.streamer.repositories.CourseToModuleRepository;
-import fr.aelion.streamer.repositories.MediaRepository;
-import fr.aelion.streamer.repositories.ModuleRepository;
+import fr.aelion.streamer.repositories.*;
 import fr.aelion.streamer.services.interfaces.CourseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +25,8 @@ public class CourseServiceImpl implements CourseService {
     private CourseRepository repository;
     @Autowired
     private CourseToModuleRepository courseToModuleRepository;
+    @Autowired
+    private ModuleToMediaRepository moduleToMediaRepository;
     @Autowired
     private MediaRepository mediaRepository;
     @Autowired
@@ -114,6 +110,7 @@ public class CourseServiceImpl implements CourseService {
         newCourse.setObjective(course.getObjective());
         newCourse.setCreator(course.getCreator());
 
+
         newCourse = repository.save(newCourse);
 
         if (course.getModules().size() > 0) {
@@ -134,6 +131,22 @@ public class CourseServiceImpl implements CourseService {
                 courseToModuleRepository.save(courseToModule);
 
                 i++;
+
+                if (mDto.getMedias() != null) {
+                    for (MediaDto mediaDto : mDto.getMedias()) {
+                        Media newMedia = modelMapper.map(mediaDto, Media.class);
+                        newMedia = mediaRepository.save(newMedia);
+
+                        ModuleToMedia moduleToMedia = new ModuleToMedia();
+                        moduleToMedia.setMedia(newMedia);
+                        moduleToMedia.setModule(newModule);
+                        moduleToMediaRepository.save(moduleToMedia);
+
+
+
+
+                    }
+                }
 
                 //List<CourseToModule> cTm = new ArrayList<CourseToModule>();
                 //cTm.add(courseToModule);
