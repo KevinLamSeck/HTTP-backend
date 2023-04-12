@@ -1,8 +1,8 @@
 package fr.aelion.streamer.services;
 
 import fr.aelion.streamer.dto.ModuleAddDto;
+import fr.aelion.streamer.dto.ModuleUpdateDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
-import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import fr.aelion.streamer.entities.Media;
 import fr.aelion.streamer.entities.Member;
@@ -15,7 +15,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -74,9 +73,41 @@ public class ModuleService {
                 moduleToMediaRepository.save(moduleToMedia);
 
                 i++;
-
             }
+        }
+        return modelMapper.map(newModule, ModuleDto.class);
+    }
 
+    public ModuleDto update(ModuleUpdateDto module) throws Exception {
+        var newModule = new Module();
+        newModule.setId(module.getId());
+        newModule.setName(module.getName());
+        newModule.setObjective(module.getObjective());
+        newModule.setCreator(modelMapper.map(module.getCreator(), Member.class));
+        List<ModuleToMedia> moduleToMediaList = moduleToMediaRepository.getModulesToMediasByModuleId(module.getId());
+        moduleToMediaList.forEach(m -> {
+            System.out.println(m);
+            moduleToMediaRepository.delete(m);
+        });
+        newModule = repository.save(newModule);
+
+        if (module.getMedias().size() > 0) {
+            int i = 0;
+            for (MediaDto m : module.getMedias()) {
+                Media newMedia = modelMapper.map(m, Media.class);
+                if ( mediaRepository.getById(m.getId()) == null) {
+                    //creer le media
+                    newMedia = mediaRepository.save(newMedia);}
+
+                //creer la table lien entre le module et chaques medias
+                ModuleToMedia moduleToMedia = new ModuleToMedia();
+                moduleToMedia.setModule(newModule);
+                moduleToMedia.setMedia(newMedia);
+                moduleToMedia.setOrderMedia(i);
+                moduleToMediaRepository.save(moduleToMedia);
+
+                i++;
+            }
         }
         return modelMapper.map(newModule, ModuleDto.class);
     }
