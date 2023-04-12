@@ -16,6 +16,7 @@ public class StreamerApplication {
     }
 
     public void run(String... args) throws Exception {
+        mediasStorageService.deleteAll();
         mediasStorageService.init();
     }
 
