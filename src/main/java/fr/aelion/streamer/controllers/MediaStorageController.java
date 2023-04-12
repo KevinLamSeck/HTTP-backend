@@ -13,7 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,7 +37,9 @@ public class MediaStorageController {
                     .path("/files/")
                     .path(file.getOriginalFilename())
                     .toUriString();
-            return ResponseEntity.status(HttpStatus.OK).body(url);
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("url", url);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         } catch (Exception e) {
             message = "Error while uploading the file: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
