@@ -1,7 +1,9 @@
 package fr.aelion.streamer.controllers;
 
 import fr.aelion.streamer.dto.ModuleAddDto;
+import fr.aelion.streamer.dto.ModuleUpdateDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
+import fr.aelion.streamer.entities.Member;
 import fr.aelion.streamer.entities.Module;
 import fr.aelion.streamer.services.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,16 @@ public class ModuleController {
     public ResponseEntity<ModuleDto> add(@RequestBody ModuleAddDto module) {
         ModuleDto moduleDto = this.moduleService.add(module);
         return ResponseEntity.ok(moduleDto);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> update(@RequestBody ModuleUpdateDto module) {
+        try {
+            return ResponseEntity.ok(moduleService.update(module));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }
