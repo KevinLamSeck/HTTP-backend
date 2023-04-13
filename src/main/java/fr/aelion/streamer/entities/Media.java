@@ -13,6 +13,13 @@ import java.util.List;
 @Getter
 @Setter
 public class Media {
+
+    public Media(String title, String url) {
+        this.title = title;
+        this.url = url;
+        createdAt = LocalDate.now();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

@@ -40,10 +40,10 @@ public class ModuleService {
         return modulesDto;
     }
 
-    public ModuleDto findOne(int id) {
+    public ModuleUpdateDto findOne(int id) {
         return repository.findById(id)
                 .map(s -> {
-                    ModuleDto moduleDto = modelMapper.map(s,ModuleDto.class);
+                    ModuleUpdateDto moduleDto = modelMapper.map(s,ModuleUpdateDto.class);
                     moduleDto.setMedias(convertDtoService.getMediaListDto(s.getMedias()));
                     return moduleDto;
                 })

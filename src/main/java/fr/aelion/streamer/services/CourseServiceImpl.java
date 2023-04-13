@@ -165,8 +165,7 @@ public class CourseServiceImpl implements CourseService {
 //            });
             // finalNewCourse.setModules(courseModules);
         }
-        return null;
-        //return modelMapper.map(newCourse, FullCourseDto.class);
+        return modelMapper.map(newCourse, FullCourseDto.class);
     }
 
     @Override
