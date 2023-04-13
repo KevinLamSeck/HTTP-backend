@@ -68,4 +68,8 @@ public class MediaService {
 //        return modelMapper.map(media, AddMediaDto.class);
 //    }
 
+    public void delete(int id) {
+        repository.deleteById(id);
+    }
+
 }

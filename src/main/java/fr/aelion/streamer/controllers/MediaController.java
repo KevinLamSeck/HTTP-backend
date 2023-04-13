@@ -48,4 +48,15 @@ public class MediaController {
         AddMediaDto addMediaDto = this.mediaService.add(media);
         return ResponseEntity.ok(addMediaDto);
     }
+
+    // Delete by id
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        try {
+            mediaService.delete(id);
+            return ResponseEntity.ok().body("Media with " + id + " was deleted");
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Media with " + id + " was not found", HttpStatus.NOT_FOUND);
+        }
+    }
 }
