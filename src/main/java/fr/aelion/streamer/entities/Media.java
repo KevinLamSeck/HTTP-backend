@@ -13,6 +13,13 @@ import java.util.List;
 @Getter
 @Setter
 public class Media {
+
+    public Media(String title, byte[] data) {
+        this.title = title;
+        this.data = data;
+        createdAt = LocalDate.now();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -35,6 +42,9 @@ public class Media {
 
     @ManyToOne
     private TypeMedia typeMedia;
+
+    @Lob
+    private byte[] data;
 
     @OneToMany(mappedBy = "media")
     private List<ModuleToMedia> modules = new ArrayList<>();
