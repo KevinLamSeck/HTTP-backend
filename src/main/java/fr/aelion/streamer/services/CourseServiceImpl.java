@@ -173,6 +173,7 @@ public class CourseServiceImpl implements CourseService {
 
         var newCourse = new Course();
         newCourse.setId(course.getId());
+        System.out.println(newCourse.getId());
         newCourse.setTitle(course.getTitle());
         newCourse.setObjective(course.getObjective());
         newCourse.setCreator(course.getCreator());
@@ -184,10 +185,11 @@ public class CourseServiceImpl implements CourseService {
         if (course.getModules().size() > 0) {
 
 
-            for (ModuleAddDto mDto : course.getModules()) {
-
-                ModuleDto mod = moduleService.add(mDto);
+            for (ModuleUpdateDto mDto : course.getModules()) {
+                System.out.println(mDto.getId()+ " // id");
+                ModuleDto mod = (mDto.getId()!=null)?moduleService.update(mDto): moduleService.add(mDto);
                 courseModules.add(mod);
+                System.out.println(mod.getId()+ " // id");
                 //creer la table lien entre le cours et chaque module
                 CourseToModule courseToModule = new CourseToModule();
                 courseToModule.setCourse(newCourse);

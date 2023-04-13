@@ -78,12 +78,12 @@ public class ModuleService {
         return modelMapper.map(newModule, ModuleDto.class);
     }
 
-    public ModuleDto update(ModuleUpdateDto module) throws Exception {
+    public ModuleDto update(ModuleUpdateDto module) {
         var newModule = new Module();
         newModule.setId(module.getId());
         newModule.setName(module.getName());
         newModule.setObjective(module.getObjective());
-        newModule.setCreator(modelMapper.map(module.getCreator(), Member.class));
+        newModule.setCreator((module.getCreator()!=null)?modelMapper.map(module.getCreator(), Member.class):null);
         List<ModuleToMedia> moduleToMediaList = moduleToMediaRepository.getModulesToMediasByModuleId(module.getId());
         moduleToMediaList.forEach(m -> {
             System.out.println(m);

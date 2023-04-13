@@ -7,5 +7,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CourseUpdateDto extends CourseAddDto {
-    private int id;
+    private Integer id;
 }

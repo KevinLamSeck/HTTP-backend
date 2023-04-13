@@ -10,6 +10,6 @@ import java.util.List;
 @Setter
 public class ModuleUpdateDto extends ModuleAddDto{
 
-   private int id;
+   private Integer id;
 
 }
