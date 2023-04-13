@@ -142,7 +142,10 @@ public class CourseServiceImpl implements CourseService {
                 if (mDto.getMedias() != null) {
                     for (MediaDto mediaDto : mDto.getMedias()) {
                         Media newMedia = modelMapper.map(mediaDto, Media.class);
+                        newMedia.setCreator(course.getCreator());
+                        newMedia.setId(null);
                         newMedia = mediaRepository.save(newMedia);
+
 
                         ModuleToMedia moduleToMedia = new ModuleToMedia();
                         moduleToMedia.setMedia(newMedia);

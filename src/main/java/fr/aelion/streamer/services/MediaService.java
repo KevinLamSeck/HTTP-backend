@@ -12,7 +12,10 @@ import fr.aelion.streamer.repositories.MediaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,4 +62,13 @@ public class MediaService {
 
         return modelMapper.map(newMedia, AddMediaDto.class);
     }
+
+//    public AddMediaDto store(MultipartFile file) throws IOException {
+//        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+//        Media media = new Media(fileName, file.getBytes());
+////        media.setUrl(file.g);
+//        repository.save(media);
+//        return modelMapper.map(media, AddMediaDto.class);
+//    }
+
 }
