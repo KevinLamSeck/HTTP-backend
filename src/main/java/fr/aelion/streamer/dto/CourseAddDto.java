@@ -16,6 +16,4 @@ public class CourseAddDto {
     private Member creator;
     private Set<ModuleAddDto> modules;
 
-
-
 }
