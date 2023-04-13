@@ -1,5 +1,6 @@
 package fr.aelion.streamer.services.interfaces;
 
+import fr.aelion.streamer.dto.CRUDDto.CourseUpdateDto;
 import fr.aelion.streamer.dto.CourseAddDto;
 import fr.aelion.streamer.dto.FullCourseDto;
 import fr.aelion.streamer.dto.simplerDtos.CourseDto;
@@ -15,4 +16,6 @@ public interface CourseService {
     void remove(int id);
 
     FullCourseDto add(CourseAddDto course);
+
+    FullCourseDto update(CourseUpdateDto course);
 }

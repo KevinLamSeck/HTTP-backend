@@ -54,11 +54,12 @@ public class ModuleService {
         var newModule = new Module();
         newModule.setName(module.getName());
         newModule.setObjective(module.getObjective());
-        newModule.setCreator(modelMapper.map(module.getCreator(), Member.class));
+
+        Member creator = (module.getCreator()==null)?null:modelMapper.map(module.getCreator(), Member.class);//moddelmap si il existe
+        newModule.setCreator(creator);
         newModule = repository.save(newModule);
 
         if (module.getMedias().size() > 0) {
-            int i = 0;
             for (MediaDto m : module.getMedias()) {
                 Media newMedia = modelMapper.map(m, Media.class);
                 if ( mediaRepository.getById(m.getId()) == null) {
@@ -69,10 +70,9 @@ public class ModuleService {
                 ModuleToMedia moduleToMedia = new ModuleToMedia();
                 moduleToMedia.setModule(newModule);
                 moduleToMedia.setMedia(newMedia);
-                moduleToMedia.setOrderMedia(i);
+                moduleToMedia.setOrderMedia(m.getOrder());
                 moduleToMediaRepository.save(moduleToMedia);
 
-                i++;
             }
         }
         return modelMapper.map(newModule, ModuleDto.class);

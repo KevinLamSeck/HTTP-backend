@@ -1,5 +1,6 @@
 package fr.aelion.streamer.controllers;
 
+import fr.aelion.streamer.dto.CRUDDto.CourseUpdateDto;
 import fr.aelion.streamer.dto.CourseAddDto;
 import fr.aelion.streamer.dto.FullCourseDto;
 import fr.aelion.streamer.dto.simplerDtos.CourseDto;
@@ -46,7 +47,15 @@ public class CourseController {
 
     @PostMapping
     public ResponseEntity<FullCourseDto> add(@RequestBody CourseAddDto course) {
+        System.out.print(course.getCreator().getId()+" // "+course.getCreator().getFirstName());
         FullCourseDto courseDto = this.service.add(course);
+        return ResponseEntity.ok(courseDto);
+    }
+
+    @PostMapping("update")
+    public ResponseEntity<FullCourseDto> update(@RequestBody CourseUpdateDto course) {
+        System.out.print(course.toString());
+        FullCourseDto courseDto = this.service.update(course);
         return ResponseEntity.ok(courseDto);
     }
 }
