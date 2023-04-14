@@ -51,12 +51,14 @@ public class MediaController {
 
     // Delete by id
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
+    public ResponseEntity<String> delete(@PathVariable int id) {
         try {
             mediaService.delete(id);
-            return ResponseEntity.ok().body("Media with " + id + " was deleted");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>("Media with " + id + " was not found", HttpStatus.NOT_FOUND);
         }
     }
+
 }
+
