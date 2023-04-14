@@ -106,6 +106,7 @@ public class ModuleService {
                 moduleToMedia.setOrderMedia(m.getOrder());
                 moduleToMediaRepository.save(moduleToMedia);
 
+
             }
         }
         return modelMapper.map(newModule, ModuleDto.class);
