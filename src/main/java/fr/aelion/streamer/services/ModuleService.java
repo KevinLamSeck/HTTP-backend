@@ -116,4 +116,10 @@ public class ModuleService {
         return modelMapper.map(newModule, ModuleDto.class);
     }
 
+    public void delete(int id) {
+
+        repository.deleteById(id);
+    }
+
+
 }
