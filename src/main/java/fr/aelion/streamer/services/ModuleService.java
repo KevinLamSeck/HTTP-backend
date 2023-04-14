@@ -96,7 +96,6 @@ public class ModuleService {
         newModule = repository.save(newModule);
 
         if (module.getMedias().size() > 0) {
-            int i = 0;
             for (MediaDto m : module.getMedias()) {
                 Media newMedia = modelMapper.map(m, Media.class);
                 newMedia.setId(null);
@@ -109,10 +108,9 @@ public class ModuleService {
                 ModuleToMedia moduleToMedia = new ModuleToMedia();
                 moduleToMedia.setModule(newModule);
                 moduleToMedia.setMedia(newMedia);
-                moduleToMedia.setOrderMedia(i);
+                moduleToMedia.setOrderMedia(m.getOrder());
                 moduleToMediaRepository.save(moduleToMedia);
 
-                i++;
             }
         }
         return modelMapper.map(newModule, ModuleDto.class);

@@ -2,7 +2,9 @@ package fr.aelion.streamer.services;
 
 import fr.aelion.streamer.dto.AddMediaDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
+import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.entities.Media;
+import fr.aelion.streamer.entities.Member;
 import fr.aelion.streamer.entities.TypeMedia;
 import fr.aelion.streamer.repositories.MediaRepository;
 import org.modelmapper.ModelMapper;
@@ -20,6 +22,8 @@ public class MediaService {
     ModelMapper modelMapper;
     @Autowired
     private MediaRepository repository;
+    @Autowired
+    private MemberService memberService;
 
     public List<MediaDto> findAll() {
         List<Media> medias = repository.findAll();
@@ -30,10 +34,10 @@ public class MediaService {
         return mediasDto;
     }
 
-    public Optional<MediaDto> findOne(int id) {
+    public Optional<AddMediaDto> findOne(int id) {
         return repository.findById(id)
                 .map(s -> {
-                    MediaDto mediaDto = modelMapper.map(s, MediaDto.class);
+                    AddMediaDto mediaDto = modelMapper.map(s, AddMediaDto.class);
                     return mediaDto;
                 });
     }
@@ -51,7 +55,9 @@ public class MediaService {
         newMedia.setDuration(media.getDuration());
         newMedia.setCreatedAt(LocalDate.now());
         newMedia.setUrl(media.getUrl());
-        newMedia.setCreator(media.getCreator());
+        // Find the member by id
+        MemberDto creator = memberService.findById(media.getCreator().getId());
+        newMedia.setCreator(modelMapper.map(creator, Member.class));
         var typeMedia = media.getTypeMedia();
         newMedia.setTypeMedia(modelMapper.map(typeMedia, TypeMedia.class));
 
@@ -67,6 +73,20 @@ public class MediaService {
 //        repository.save(media);
 //        return modelMapper.map(media, AddMediaDto.class);
 //    }
+
+    // Update media
+    public AddMediaDto update(Media media) {
+        Optional<Media> optionalMedia = repository.findById(media.getId());
+        if (optionalMedia.isPresent()) {
+            MemberDto creator = memberService.findById(media.getCreator().getId());
+            media.setCreator(modelMapper.map(creator, Member.class));
+            Media mediaSaved =  repository.save(modelMapper.map(media, Media.class));
+            return modelMapper.map(mediaSaved, AddMediaDto.class);
+        } else {
+            throw new IllegalArgumentException("Media with ID " + media.getId() + " not found");
+        }
+    }
+
 
     public void delete(int id) {
         repository.deleteById(id);

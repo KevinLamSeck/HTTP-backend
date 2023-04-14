@@ -1,5 +1,6 @@
 package fr.aelion.streamer.dto;
 
+import fr.aelion.streamer.dto.simplerDtos.MemberDto;
 import fr.aelion.streamer.entities.Member;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,5 +19,5 @@ public class AddMediaDto {
     private String url;
     private Integer order = 0;
     private TypeMediaDto typeMedia;
-    private Member creator;
+    private MemberDto creator;
 }
