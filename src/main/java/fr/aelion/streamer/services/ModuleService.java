@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,6 +36,15 @@ public class ModuleService {
         List<Module> modules = repository.findAll();
         List<ModuleDto> modulesDto = modules.stream().map(s -> {
             ModuleDto moduleDto = modelMapper.map(s, ModuleDto.class);
+            List<MediaDto> lstMediaDtos = new ArrayList<>();
+            if (s.getMedias().size() > 0) {
+                for (ModuleToMedia m : s.getMedias()) {
+                    MediaDto newMedia = modelMapper.map(m.getMedia(), MediaDto.class);
+                    lstMediaDtos.add(newMedia);
+
+                }
+            }
+            moduleDto.setMedias(lstMediaDtos);
             return moduleDto;
         }).toList();
         return modulesDto;
@@ -52,7 +62,20 @@ public class ModuleService {
 
     public List<ModuleDto> findByCreatorID(int id) {
         List<Module> moduleFromRepo = repository.findByCreatorId(id);
-        return moduleFromRepo.stream().map(s -> modelMapper.map(s, ModuleDto.class)).toList();
+        return moduleFromRepo.stream().map(s -> {
+                    ModuleDto moduleDto = modelMapper.map(s, ModuleDto.class);
+                    List<MediaDto> lstMediaDtos = new ArrayList<>();
+                    if (s.getMedias().size() > 0) {
+                        for (ModuleToMedia m : s.getMedias()) {
+                            MediaDto newMedia = modelMapper.map(m.getMedia(), MediaDto.class);
+                            lstMediaDtos.add(newMedia);
+
+                        }
+                    }
+                    moduleDto.setMedias(lstMediaDtos);
+                    return moduleDto;
+                }
+        ).toList();
     }
 
     public ModuleDto add(ModuleAddDto module) {
