@@ -39,6 +39,7 @@ public class ConvertDtoService {
             newModule.setOrder(courseToModule.getOrderModule());//ajoute l'order
             newModule.setMedias(getMediaListDto(mod.getMedias()));//ajoute la liste des medias (voir getMedialistDto())
 
+
             //gestion du temps
             newModule.setTotalTime(convertToTime(newModule.getMedias()));
 

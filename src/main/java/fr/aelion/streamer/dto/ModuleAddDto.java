@@ -15,6 +15,7 @@ public class ModuleAddDto {
     private String name;
     private String objective;
     private MemberDto creator;
+    private int order=0;
     private List<MediaDto> medias;
 
 }

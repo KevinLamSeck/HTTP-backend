@@ -16,7 +16,7 @@ public class AddMediaDto {
     private String totalTime;
     private LocalDate createdAt;
     private String url;
-    private Integer order = null;
+    private Integer order = 0;
     private TypeMediaDto typeMedia;
     private Member creator;
 }

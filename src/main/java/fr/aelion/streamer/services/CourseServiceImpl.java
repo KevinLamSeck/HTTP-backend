@@ -1,8 +1,10 @@
 package fr.aelion.streamer.services;
 
 import fr.aelion.streamer.dto.*;
+import fr.aelion.streamer.dto.CRUDDto.CourseUpdateDto;
 import fr.aelion.streamer.dto.simplerDtos.CourseDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
+import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import fr.aelion.streamer.entities.*;
 import fr.aelion.streamer.entities.Module;
 import fr.aelion.streamer.repositories.*;
@@ -29,6 +31,8 @@ public class CourseServiceImpl implements CourseService {
     private ModuleToMediaRepository moduleToMediaRepository;
     @Autowired
     private MediaRepository mediaRepository;
+    @Autowired
+    private MemberRepository memberRepository;
     @Autowired
     private ModuleRepository moduleRepository;
     @Autowired
@@ -108,7 +112,10 @@ public class CourseServiceImpl implements CourseService {
         var newCourse = new Course();
         newCourse.setTitle(course.getTitle());
         newCourse.setObjective(course.getObjective());
-        newCourse.setCreator(course.getCreator());
+        System.out.println(course.getCreator().getId());
+        Member creator = new Member();
+        creator.setId(course.getCreator().getId());
+        newCourse.setCreator(creator);
 
 
         newCourse = repository.save(newCourse);
@@ -145,8 +152,6 @@ public class CourseServiceImpl implements CourseService {
                         moduleToMedia.setModule(newModule);
                         moduleToMediaRepository.save(moduleToMedia);
 
-//
-
 
                     }
                 }
@@ -166,7 +171,62 @@ public class CourseServiceImpl implements CourseService {
         return modelMapper.map(newCourse, FullCourseDto.class);
     }
 
+    @Override
+    public FullCourseDto update(CourseUpdateDto course) {
 
+        var newCourse = new Course();
+        newCourse.setId(course.getId());
+        System.out.println(newCourse.getId());
+        newCourse.setTitle(course.getTitle());
+        newCourse.setObjective(course.getObjective());
+        newCourse.setCreator(course.getCreator());
+
+
+        newCourse = repository.save(newCourse);
+        System.out.println(course.getModules().size());
+        List<ModuleDto> courseModules = new ArrayList<>();
+        if (course.getModules().size() > 0) {
+
+
+            for (ModuleUpdateDto mDto : course.getModules()) {
+                System.out.println(mDto.getId()+ " // id");
+                ModuleDto mod = (mDto.getId()!=null)?moduleService.update(mDto): moduleService.add(mDto);
+                courseModules.add(mod);
+                System.out.println(mod.getId()+ " // id");
+                //creer la table lien entre le cours et chaque module
+                CourseToModule courseToModule = new CourseToModule();
+                courseToModule.setCourse(newCourse);
+                courseToModule.setModule(modelMapper.map(mod, Module.class));
+                courseToModule.setOrderModule(mDto.getOrder());
+                courseToModuleRepository.save(courseToModule);
+
+
+//
+//                if (mDto.getMedias() != null) {
+//                    for (MediaDto mediaDto : mDto.getMedias()) {
+//                        Media newMedia = modelMapper.map(mediaDto, Media.class);
+//                        newMedia = mediaRepository.save(newMedia);
+//
+//                        ModuleToMedia moduleToMedia = new ModuleToMedia();
+//                        moduleToMedia.setMedia(newMedia);
+//                        moduleToMedia.setModule(newModule);
+//                        moduleToMediaRepository.save(moduleToMedia);
+//
+//
+//                    }
+//                }
+
+                //List<CourseToModule> cTm = new ArrayList<CourseToModule>();
+                //cTm.add(courseToModule);
+
+                //cTm.add();
+                //courseModules.add(courseToModule);
+            }
+        }
+        FullCourseDto returnedCourse = modelMapper.map(newCourse, FullCourseDto.class);
+        returnedCourse.setModules(courseModules);
+        return returnedCourse;
+    }
 
 
 }

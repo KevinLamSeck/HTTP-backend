@@ -20,6 +20,4 @@ public class ModuleDto {
 
     private boolean isSelected = false;
 
-
-
 }
