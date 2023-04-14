@@ -36,6 +36,15 @@ public class ModuleController {
         }
     }
 
+    @GetMapping("creator/{id}")
+    public ResponseEntity<?> findByCreatorID(@PathVariable int id) {
+        try {
+            return ResponseEntity.ok(moduleService.findByCreatorID(id));
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Module with " + id + " creator was not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<ModuleDto> add(@RequestBody ModuleAddDto module) {
         ModuleDto moduleDto = this.moduleService.add(module);
