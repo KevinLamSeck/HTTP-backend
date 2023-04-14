@@ -34,9 +34,29 @@ public class MediaController {
         }
     }
 
+    @GetMapping("creator/{id}")
+    public ResponseEntity<?> findByCreatorID(@PathVariable int id) {
+        try {
+            return ResponseEntity.ok(mediaService.findByCreatorID(id));
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Media with " + id + " was not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<AddMediaDto> add(@RequestBody AddMediaDto media) {
         AddMediaDto addMediaDto = this.mediaService.add(media);
         return ResponseEntity.ok(addMediaDto);
+    }
+
+    // Delete by id
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(@PathVariable int id) {
+        try {
+            mediaService.delete(id);
+            return ResponseEntity.ok().body("Media with " + id + " was deleted");
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Media with " + id + " was not found", HttpStatus.NOT_FOUND);
+        }
     }
 }

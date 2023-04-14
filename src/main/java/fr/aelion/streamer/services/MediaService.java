@@ -1,23 +1,15 @@
 package fr.aelion.streamer.services;
 
 import fr.aelion.streamer.dto.AddMediaDto;
-import fr.aelion.streamer.dto.TypeMediaDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
-import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
 import fr.aelion.streamer.entities.Media;
-import fr.aelion.streamer.entities.Module;
-import fr.aelion.streamer.entities.ModuleToMedia;
 import fr.aelion.streamer.entities.TypeMedia;
 import fr.aelion.streamer.repositories.MediaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +38,11 @@ public class MediaService {
                 });
     }
 
+    public List<MediaDto> findByCreatorID(int id) {
+        List<Media> mediaFromRepo = repository.findByCreatorId(id);
+        return mediaFromRepo.stream().map(s -> modelMapper.map(s, MediaDto.class)).toList();
+    }
+
 
     public AddMediaDto add(AddMediaDto media) {
         var newMedia = new Media();
@@ -70,5 +67,9 @@ public class MediaService {
 //        repository.save(media);
 //        return modelMapper.map(media, AddMediaDto.class);
 //    }
+
+    public void delete(int id) {
+        repository.deleteById(id);
+    }
 
 }
