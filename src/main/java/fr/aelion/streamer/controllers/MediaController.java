@@ -3,6 +3,7 @@ package fr.aelion.streamer.controllers;
 import fr.aelion.streamer.dto.AddMediaDto;
 import fr.aelion.streamer.dto.simplerDtos.MediaDto;
 import fr.aelion.streamer.dto.simplerDtos.ModuleDto;
+import fr.aelion.streamer.entities.Media;
 import fr.aelion.streamer.services.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,16 @@ public class MediaController {
     public ResponseEntity<AddMediaDto> add(@RequestBody AddMediaDto media) {
         AddMediaDto addMediaDto = this.mediaService.add(media);
         return ResponseEntity.ok(addMediaDto);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<AddMediaDto> update(@RequestBody Media mediaDto) {
+        try {
+            AddMediaDto updatedMediaDto = mediaService.update(mediaDto);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedMediaDto);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     // Delete by id

@@ -41,6 +41,15 @@ public class MemberService {
         return memberDtos;
     }
 
+    public MemberDto findById(int id) {
+        return repository.findById(id)
+              .map(s -> {
+                    MemberDto memberDto = modelMapper.map(s, MemberDto.class);
+                    return memberDto;
+                })
+              .orElse(null);
+    }
+
     public List<SimpleMemberDto> findSimpleMembers() {
         return repository.findAll()
                 .stream()

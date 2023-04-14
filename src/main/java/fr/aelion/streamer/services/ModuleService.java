@@ -50,6 +50,11 @@ public class ModuleService {
                 .orElseThrow();
     }
 
+    public List<ModuleDto> findByCreatorID(int id) {
+        List<Module> moduleFromRepo = repository.findByCreatorId(id);
+        return moduleFromRepo.stream().map(s -> modelMapper.map(s, ModuleDto.class)).toList();
+    }
+
     public ModuleDto add(ModuleAddDto module) {
         var newModule = new Module();
         newModule.setName(module.getName());
@@ -111,5 +116,11 @@ public class ModuleService {
         }
         return modelMapper.map(newModule, ModuleDto.class);
     }
+
+    public void delete(int id) {
+
+        repository.deleteById(id);
+    }
+
 
 }
