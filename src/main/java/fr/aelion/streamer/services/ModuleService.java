@@ -37,13 +37,15 @@ public class ModuleService {
         List<ModuleDto> modulesDto = modules.stream().map(s -> {
             ModuleDto moduleDto = modelMapper.map(s, ModuleDto.class);
             List<MediaDto> lstMediaDtos = new ArrayList<>();
+            int totalTime =0;
             if (s.getMedias().size() > 0) {
                 for (ModuleToMedia m : s.getMedias()) {
                     MediaDto newMedia = modelMapper.map(m.getMedia(), MediaDto.class);
                     lstMediaDtos.add(newMedia);
-
+                    totalTime+=newMedia.getDuration();
                 }
             }
+            moduleDto.setTotalTime(totalTime+"");
             moduleDto.setMedias(lstMediaDtos);
             return moduleDto;
         }).toList();
