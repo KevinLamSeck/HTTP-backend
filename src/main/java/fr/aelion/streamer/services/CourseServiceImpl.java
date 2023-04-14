@@ -124,7 +124,7 @@ public class CourseServiceImpl implements CourseService {
             Course finalNewCourse = newCourse;
             List<CourseToModule> courseModules = new ArrayList<>();
 
-            int i = 0;
+
             for (ModuleAddDto mDto : course.getModules()) {
                 Module newModule = modelMapper.map(mDto, Module.class);
                 //creer le module
@@ -134,10 +134,10 @@ public class CourseServiceImpl implements CourseService {
                 CourseToModule courseToModule = new CourseToModule();
                 courseToModule.setCourse(newCourse);
                 courseToModule.setModule(newModule);
-                courseToModule.setOrderModule(i);
+                courseToModule.setOrderModule(mDto.getOrder());
                 courseToModuleRepository.save(courseToModule);
 
-                i++;
+
 
                 if (mDto.getMedias() != null) {
                     for (MediaDto mediaDto : mDto.getMedias()) {
@@ -150,6 +150,7 @@ public class CourseServiceImpl implements CourseService {
                         ModuleToMedia moduleToMedia = new ModuleToMedia();
                         moduleToMedia.setMedia(newMedia);
                         moduleToMedia.setModule(newModule);
+                        moduleToMedia.setOrderMedia(mediaDto.getOrder());
                         moduleToMediaRepository.save(moduleToMedia);
 
 
