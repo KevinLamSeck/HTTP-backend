@@ -43,7 +43,7 @@ public class ModuleService {
     public ModuleUpdateDto findOne(int id) {
         return repository.findById(id)
                 .map(s -> {
-                    ModuleUpdateDto moduleDto = modelMapper.map(s,ModuleUpdateDto.class);
+                    ModuleUpdateDto moduleDto = modelMapper.map(s, ModuleUpdateDto.class);
                     moduleDto.setMedias(convertDtoService.getMediaListDto(s.getMedias()));
                     return moduleDto;
                 })
@@ -55,16 +55,15 @@ public class ModuleService {
         newModule.setName(module.getName());
         newModule.setObjective(module.getObjective());
 
-        Member creator = (module.getCreator()==null)?null:modelMapper.map(module.getCreator(), Member.class);//moddelmap si il existe
+        Member creator = (module.getCreator() == null) ? null : modelMapper.map(module.getCreator(), Member.class);//moddelmap si il existe
         newModule.setCreator(creator);
         newModule = repository.save(newModule);
 
         if (module.getMedias().size() > 0) {
             for (MediaDto m : module.getMedias()) {
                 Media newMedia = modelMapper.map(m, Media.class);
-                if ( mediaRepository.getById(m.getId()) == null) {
-                //creer le media
-                newMedia = mediaRepository.save(newMedia);}
+                newMedia.setId(null);
+                newMedia = mediaRepository.save(newMedia);
 
                 //creer la table lien entre le module et chaques medias
                 ModuleToMedia moduleToMedia = new ModuleToMedia();
@@ -83,7 +82,7 @@ public class ModuleService {
         newModule.setId(module.getId());
         newModule.setName(module.getName());
         newModule.setObjective(module.getObjective());
-        newModule.setCreator((module.getCreator()!=null)?modelMapper.map(module.getCreator(), Member.class):null);
+        newModule.setCreator((module.getCreator() != null) ? modelMapper.map(module.getCreator(), Member.class) : null);
         List<ModuleToMedia> moduleToMediaList = moduleToMediaRepository.getModulesToMediasByModuleId(module.getId());
         moduleToMediaList.forEach(m -> {
             System.out.println(m);
@@ -95,9 +94,11 @@ public class ModuleService {
             int i = 0;
             for (MediaDto m : module.getMedias()) {
                 Media newMedia = modelMapper.map(m, Media.class);
-                if ( mediaRepository.getById(m.getId()) == null) {
-                    //creer le media
-                    newMedia = mediaRepository.save(newMedia);}
+                newMedia.setId(null);
+                newMedia.setCreator((module.getCreator() != null) ? modelMapper.map(module.getCreator(), Member.class) : null);
+                //creer le media
+                newMedia = mediaRepository.save(newMedia);
+
 
                 //creer la table lien entre le module et chaques medias
                 ModuleToMedia moduleToMedia = new ModuleToMedia();
