@@ -14,6 +14,7 @@ public class CourseAddDto {
     private String title;
     private String objective;
     private Member creator;
+    private Boolean published;
     private Set<ModuleUpdateDto> modules;
 
 }

@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -181,6 +182,8 @@ public class CourseServiceImpl implements CourseService {
         newCourse.setTitle(course.getTitle());
         newCourse.setObjective(course.getObjective());
         newCourse.setCreator(course.getCreator());
+        newCourse.setPublished(course.getPublished());
+        newCourse.setUpdatedAt(LocalDate.now());
 
 
         newCourse = repository.save(newCourse);
