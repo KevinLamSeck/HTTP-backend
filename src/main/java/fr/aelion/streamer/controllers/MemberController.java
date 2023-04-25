@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 @RestController
-@RequestMapping("api/v1/students") // http://127.0.0.1:8080/api/v1/students
+@RequestMapping("api/v1/students") // http://127.0.0.1:5000/api/v1/students
 @CrossOrigin
 public class MemberController {
     @Autowired
@@ -111,7 +111,7 @@ public class MemberController {
     }
 
     @PostMapping("recovery")
-    public ResponseEntity<?> recovery(@RequestBody Member Member) throws IOException {
+    public ResponseEntity<?> passwordRecovery(@RequestBody Member Member) throws IOException {
         String response = (this.memberService.recovery(Member.getLogin(), Member.getEmail()));
         if (response == null) {
             return ResponseEntity.notFound().build();
