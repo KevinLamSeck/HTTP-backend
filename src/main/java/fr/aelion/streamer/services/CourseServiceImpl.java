@@ -197,21 +197,25 @@ public class CourseServiceImpl implements CourseService {
                 List<CourseToModule> cTmToDelete = new ArrayList<>();
                 for (CourseToModule cTm : cTmOld) {
                     if (mDto.getId() != null) {
-                        if (cTm.getModule().getId() == mDto.getId()) {
+                        if (cTm.getModule().getId() != mDto.getId()) {
                             cTmToDelete.add(cTm);
                         }
                     }
                 }
-                courseToModuleRepository.deleteAll(cTmToDelete);
+                cTmToDelete.forEach((CourseToModule ctm) -> {
+                    System.out.println(ctm.getModule().getName() + " /here/ " + ctm.getCourse().getTitle());
+                });
+                for (CourseToModule courseToModule : cTmToDelete) {
+
+                    courseToModuleRepository.delete(courseToModule);
+                }
 
                 mDto.setCreator((course.getCreator() != null) ? modelMapper.map(course.getCreator(), MemberDto.class) : null);
 
-                System.out.println(mDto.getId() + " // id");
 
                 ModuleDto mod = (mDto.getId() != null) ? moduleService.update(mDto) : moduleService.add(mDto);
 
                 courseModules.add(mod);
-                System.out.println(mod.getId() + " // id");
                 //creer la table lien entre le cours et chaque module
                 CourseToModule courseToModule = new CourseToModule();
                 courseToModule.setCourse(newCourse);

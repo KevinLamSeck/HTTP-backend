@@ -38,5 +38,6 @@ public class Course {
 
     public Course() {
         this.createdAt = LocalDate.now();
+        this.published=false;
     }
 }
