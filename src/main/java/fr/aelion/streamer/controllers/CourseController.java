@@ -47,7 +47,7 @@ public class CourseController {
 
     @PostMapping
     public ResponseEntity<FullCourseDto> add(@RequestBody CourseAddDto course) {
-        System.out.print(course.getCreator().getId()+" // "+course.getCreator().getFirstName());
+       // System.out.print(course.getCreator().getId()+" // "+course.getCreator().getFirstName());
         FullCourseDto courseDto = this.service.add(course);
         return ResponseEntity.ok(courseDto);
     }
