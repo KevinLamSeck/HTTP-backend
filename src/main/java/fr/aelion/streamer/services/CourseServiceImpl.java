@@ -129,7 +129,9 @@ public class CourseServiceImpl implements CourseService {
 
             for (ModuleAddDto mDto : course.getModules()) {
                 Module newModule = modelMapper.map(mDto, Module.class);
+                newModule.setId(null);
                 //creer le module
+                newModule.setCreator(creator);
                 newModule = moduleRepository.save(newModule);
 
                 //creer la table lien entre le cours et chaque module
