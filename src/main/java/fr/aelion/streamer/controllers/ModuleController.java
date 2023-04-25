@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("api/v1/modules") // http://127.0.0.1:8080/api/v1/students
+@RequestMapping("api/v1/modules") // http://127.0.0.1:5000/api/v1/students
 @CrossOrigin
 public class ModuleController {
 
