@@ -1,5 +1,6 @@
 package fr.aelion.streamer.dto;
 
+import fr.aelion.streamer.enumFolder.MemberType;
 import lombok.*;
 
 @Getter
@@ -12,4 +13,5 @@ public class SimpleMemberDto {
     private String lastName;
     private String firstName;
     private String email;
+    private MemberType role;
 }

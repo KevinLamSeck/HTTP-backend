@@ -69,6 +69,7 @@ public class ConvertDtoService {
             newMedia.setOrder(moduleToMedia.getOrderMedia());//ajoute l'order
 
             newMediaList.add(newMedia);
+
         }
         return newMediaList;
     }

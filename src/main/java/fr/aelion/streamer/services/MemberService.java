@@ -38,6 +38,14 @@ public class MemberService {
         }).toList();
         return memberDtos;
     }
+    public List<MemberDto> findAllStudent() {
+        List<Member> members = repository.findAll();
+        List<MemberDto> memberDtos = members.stream().map(s -> {
+            MemberDto memberDto = modelMapper.map(s, MemberDto.class);
+            return memberDto;
+        }).toList();
+        return memberDtos;
+    }
 
     public MemberDto findById(int id) {
         return repository.findById(id)
@@ -49,7 +57,7 @@ public class MemberService {
     }
 
     public List<SimpleMemberDto> findSimpleMembers() {
-        return repository.findAll()
+        List<SimpleMemberDto> sMBR= repository.findAll()
                 .stream()
                 .map(s -> {
                     SimpleMemberDto dto = new SimpleMemberDto();
@@ -57,9 +65,16 @@ public class MemberService {
                     dto.setLastName(s.getLastName());
                     dto.setFirstName(s.getFirstName());
                     dto.setEmail(s.getEmail());
+                    dto.setRole(s.getRole());
                     return dto;
                 })
                 .collect(Collectors.toList());
+        System.out.println(sMBR.size());
+        List<SimpleMemberDto> filteredSMBR = sMBR.stream().filter((s)->s.getRole()==MemberType.STUDENT).toList();
+        System.out.println(filteredSMBR.size());
+
+        return filteredSMBR;
+
     }
 
     public List<SimpleMemberProjection> fromProjection() {
