@@ -114,7 +114,7 @@ public class CourseServiceImpl implements CourseService {
         var newCourse = new Course();
         newCourse.setTitle(course.getTitle());
         newCourse.setObjective(course.getObjective());
-        System.out.println(course.getCreator().getId());
+        ////System.out.println(course.getCreator().getId());
         Member creator = new Member();
         creator.setId(course.getCreator().getId());
         newCourse.setCreator(creator);
@@ -180,7 +180,7 @@ public class CourseServiceImpl implements CourseService {
 
         var newCourse = new Course();
         newCourse.setId(course.getId());
-        System.out.println(newCourse.getId());
+        //System.out.println(newCourse.getId());
         newCourse.setTitle(course.getTitle());
         newCourse.setObjective(course.getObjective());
         newCourse.setCreator(course.getCreator());
@@ -189,7 +189,7 @@ public class CourseServiceImpl implements CourseService {
 
 
         newCourse = repository.save(newCourse);
-        System.out.println(course.getModules().size());
+        //System.out.println(course.getModules().size());
         List<ModuleDto> courseModules = new ArrayList<>();
         List<CourseToModule> cTmOld = courseToModuleRepository.getCourseToModuleByCourseId(course.getId());
 
@@ -205,7 +205,7 @@ public class CourseServiceImpl implements CourseService {
                     }
                 }
 //                cTmToDelete.forEach((CourseToModule ctm) -> {
-//                    System.out.println(ctm.getModule().getName() + " /here/ " + ctm.getCourse().getTitle());
+//                    //System.out.println(ctm.getModule().getName() + " /here/ " + ctm.getCourse().getTitle());
 //                });
                 for (CourseToModule courseToModule : cTmToDelete) {
 

@@ -37,16 +37,17 @@ public class ModuleService {
         List<ModuleDto> modulesDto = modules.stream().map(s -> {
             ModuleDto moduleDto = modelMapper.map(s, ModuleDto.class);
             List<MediaDto> lstMediaDtos = new ArrayList<>();
-            int totalTime =0;
-            if (s.getMedias().size() > 0) {
-                for (ModuleToMedia m : s.getMedias()) {
-                    MediaDto newMedia = modelMapper.map(m.getMedia(), MediaDto.class);
-                    lstMediaDtos.add(newMedia);
-                    totalTime+=newMedia.getDuration();
-                }
-            }
-            moduleDto.setTotalTime(totalTime+"");
-            moduleDto.setMedias(lstMediaDtos);
+//            int totalTime =0;
+//            if (s.getMedias().size() > 0) {
+//
+//                for (ModuleToMedia m : s.getMedias()) {
+//                    MediaDto newMedia = modelMapper.map(m.getMedia(), MediaDto.class);
+//                    lstMediaDtos.add(newMedia);
+//                    totalTime+=newMedia.getDuration();
+//                }
+//            }
+//            moduleDto.setTotalTime(totalTime+"");
+            moduleDto.setMedias(convertDtoService.getMediaListDto(s.getMedias()));
             return moduleDto;
         }).toList();
         return modulesDto;
@@ -66,16 +67,17 @@ public class ModuleService {
         List<Module> moduleFromRepo = repository.findByCreatorId(id);
         return moduleFromRepo.stream().map(s -> {
                     ModuleDto moduleDto = modelMapper.map(s, ModuleDto.class);
-                    List<MediaDto> lstMediaDtos = new ArrayList<>();
-                    if (s.getMedias().size() > 0) {
-                        for (ModuleToMedia m : s.getMedias()) {
-                            MediaDto newMedia = modelMapper.map(m.getMedia(), MediaDto.class);
-                            lstMediaDtos.add(newMedia);
+//                    List<MediaDto> lstMediaDtos = new ArrayList<>();
+//                    if (s.getMedias().size() > 0) {
+//                        for (ModuleToMedia m : s.getMedias()) {
+//                            MediaDto newMedia = modelMapper.map(m.getMedia(), MediaDto.class);
+//                            lstMediaDtos.add(newMedia);
+//
+//                        }
+//                    }
+            moduleDto.setMedias(convertDtoService.getMediaListDto(s.getMedias()));
 
-                        }
-                    }
-                    moduleDto.setMedias(lstMediaDtos);
-                    return moduleDto;
+            return moduleDto;
                 }
         ).toList();
     }
