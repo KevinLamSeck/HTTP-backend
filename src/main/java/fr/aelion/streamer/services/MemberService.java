@@ -69,9 +69,7 @@ public class MemberService {
                     return dto;
                 })
                 .collect(Collectors.toList());
-        System.out.println(sMBR.size());
         List<SimpleMemberDto> filteredSMBR = sMBR.stream().filter((s)->s.getRole()==MemberType.STUDENT).toList();
-        System.out.println(filteredSMBR.size());
 
         return filteredSMBR;
 
