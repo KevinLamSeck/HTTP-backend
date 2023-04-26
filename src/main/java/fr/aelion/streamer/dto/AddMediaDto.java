@@ -14,7 +14,6 @@ public class AddMediaDto {
     private String title;
     private String summary;
     private Float duration;
-    private String totalTime;
     private LocalDate createdAt;
     private String url;
     private Integer order = 0;
