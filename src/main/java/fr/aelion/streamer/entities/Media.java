@@ -46,7 +46,7 @@ public class Media {
     @Lob
     private byte[] data;
 
-    @OneToMany(mappedBy = "media")
+    @OneToMany(mappedBy = "media", cascade = CascadeType.REMOVE)
     private List<ModuleToMedia> modules = new ArrayList<>();
 
     public Media() {
