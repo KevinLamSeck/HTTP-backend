@@ -4,9 +4,7 @@ import fr.aelion.streamer.dto.AddMemberDto;
 import fr.aelion.streamer.dto.FullCourseDto;
 import fr.aelion.streamer.dto.SimpleMemberDto;
 import fr.aelion.streamer.dto.SimpleMemberProjection;
-import fr.aelion.streamer.dto.simplerDtos.ConceptorDto;
-import fr.aelion.streamer.dto.simplerDtos.CourseDto;
-import fr.aelion.streamer.dto.simplerDtos.MemberDto;
+import fr.aelion.streamer.dto.simplerDtos.*;
 import fr.aelion.streamer.entities.Member;
 import fr.aelion.streamer.enumFolder.MemberType;
 import fr.aelion.streamer.repositories.MemberRepository;
@@ -96,11 +94,17 @@ public class MemberService {
         return repository.findById(id)
                 .map(s -> {
                     ConceptorDto conceptorDto = modelMapper.map(s, ConceptorDto.class);
-                    List<CourseDto> courseDtos = new ArrayList<>();
-                    courseDtos = s.getCourses().stream().map((c) -> {
+                    List<CourseDto> courseDtos  = s.getCourses().stream().map((c) -> {
                         return convertDtoService.convertCourseToDto(c);
                     }).toList();
+                    List<ModuleDto> moduleDtos  = convertDtoService.convertModulesListToDto(s.getModules());
+
+                    List<MediaDto> mediasDtos  = s.getMedias().stream().map((m) -> {
+                        return modelMapper.map(m, MediaDto.class);
+                    }).toList();
                     conceptorDto.setCourses(courseDtos);
+                    conceptorDto.setModules(moduleDtos);
+                    conceptorDto.setMedias(mediasDtos);
                     return conceptorDto;
                 })
                 .orElseThrow();

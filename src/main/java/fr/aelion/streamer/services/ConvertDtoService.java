@@ -28,6 +28,17 @@ public class ConvertDtoService {
 
 
         return fullCourseDto;
+    }    public List<ModuleDto>  convertModulesListToDto(List<Module> modules) {
+        List<ModuleDto> modulesDto = new ArrayList<>();
+        for (Module m : modules)
+        {
+            ModuleDto mod = modelMapper.map(m,ModuleDto.class);
+            mod.setMedias(this.getMediaListDto(m.getMedias()));
+            modulesDto.add(mod);
+        }
+
+
+        return modulesDto;
     }
 
     public List<ModuleDto> getModuleListDto(List<CourseToModule> cTmList) {//fonction qui renvois directement tout les modules plutot que la table de jointure

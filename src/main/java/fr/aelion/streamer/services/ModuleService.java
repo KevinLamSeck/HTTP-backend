@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +96,7 @@ public class ModuleService {
             for (MediaDto m : module.getMedias()) {
                 Media newMedia = modelMapper.map(m, Media.class);
                 newMedia.setId(null);
+                newMedia.setCreatedAt(LocalDate.now());
                 newMedia = mediaRepository.save(newMedia);
 
                 //creer la table lien entre le module et chaques medias

@@ -147,6 +147,7 @@ public class CourseServiceImpl implements CourseService {
                         Media newMedia = modelMapper.map(mediaDto, Media.class);
                         newMedia.setCreator(course.getCreator());
                         newMedia.setId(null);
+                        newMedia.setCreatedAt(LocalDate.now());
                         newMedia = mediaRepository.save(newMedia);
 
 
@@ -192,25 +193,28 @@ public class CourseServiceImpl implements CourseService {
         //System.out.println(course.getModules().size());
         List<ModuleDto> courseModules = new ArrayList<>();
         List<CourseToModule> cTmOld = courseToModuleRepository.getCourseToModuleByCourseId(course.getId());
+        for (CourseToModule courseToModule : cTmOld) {
+
+            courseToModuleRepository.delete(courseToModule);
+        }
+
+
 
         if (course.getModules().size() > 0) {
             for (ModuleUpdateDto mDto : course.getModules()) {
-                //delete old cTm et bordel c'est moche
-                List<CourseToModule> cTmToDelete = new ArrayList<>();
-                for (CourseToModule cTm : cTmOld) {
-                    if (mDto.getId() != null) {
-                        if (cTm.getModule().getId() != mDto.getId()) {
-                            cTmToDelete.add(cTm);
-                        }
-                    }
-                }
+//                //delete old cTm et bordel c'est moche
+//                List<CourseToModule> cTmToDelete = new ArrayList<>();
+//                for (CourseToModule cTm : cTmOld) {
+//                    if (mDto.getId() != null) {
+//                        if (cTm.getModule().getId() != mDto.getId()) {
+//                            cTmToDelete.add(cTm);
+//                        }
+//                    }
+//                }
 //                cTmToDelete.forEach((CourseToModule ctm) -> {
 //                    //System.out.println(ctm.getModule().getName() + " /here/ " + ctm.getCourse().getTitle());
 //                });
-                for (CourseToModule courseToModule : cTmToDelete) {
 
-                    courseToModuleRepository.delete(courseToModule);
-                }
 
                 mDto.setCreator((course.getCreator() != null) ? modelMapper.map(course.getCreator(), MemberDto.class) : null);
 
@@ -218,6 +222,7 @@ public class CourseServiceImpl implements CourseService {
                 //ModuleDto mod = (mDto.getId() != null) ? moduleService.update(mDto) : moduleService.add(mDto);
 
                 mDto.setId(null);
+
                 ModuleDto mod = moduleService.add(mDto);
 
                 courseModules.add(mod);
