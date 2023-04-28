@@ -6,6 +6,8 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import fr.aelion.streamer.services.interfaces.MediaStorageService;
@@ -30,14 +32,13 @@ public class MediaStorageServiceImpl implements MediaStorageService {
     }
 
     @Override
-    public void save(MultipartFile file) {
+    public void save(String filename ,MultipartFile file) {
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(filename)));
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
                 throw new RuntimeException("A file of that name already exists.");
             }
-
             throw new RuntimeException(e.getMessage());
         }
     }

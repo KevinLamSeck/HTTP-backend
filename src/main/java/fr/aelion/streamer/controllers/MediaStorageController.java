@@ -16,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,12 +32,17 @@ public class MediaStorageController {
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         String message;
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid.toString() + "_" + file.getOriginalFilename();
+
         try {
-            mediaStorageService.save(file);
+            mediaStorageService.save(fileName, file);
+
             String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/files/")
-                    .path(file.getOriginalFilename())
+                    .path(fileName)
                     .toUriString();
+
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("url", url);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);

@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 public interface MediaStorageService {
     public void init();
 
-    public void save(MultipartFile file);
+    public void save(String filename, MultipartFile file);
 
     public Resource load(String filename);
 
