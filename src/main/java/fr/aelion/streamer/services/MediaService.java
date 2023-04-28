@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -83,13 +84,17 @@ public class MediaService {
             Media mediaSaved =  repository.save(modelMapper.map(media, Media.class));
             return modelMapper.map(mediaSaved, AddMediaDto.class);
         } else {
-            throw new IllegalArgumentException("Media with ID " + media.getId() + " not found");
+            throw new NoSuchElementException("Media with ID " + media.getId() + " not found");
         }
     }
 
-
     public void delete(int id) {
-        repository.deleteById(id);
+        Optional<Media> optionalMedia = repository.findById(id);
+        if (optionalMedia.isPresent()) {
+            repository.deleteById(optionalMedia.get().getId());
+        } else {
+            throw new NoSuchElementException("Media with ID " + id + " not found");
+        }
     }
 
 }

@@ -67,7 +67,7 @@ public class MediaController {
             mediaService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>("Media with " + id + " was not found", HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Media with "  + id + " was not found");
         }
     }
 
