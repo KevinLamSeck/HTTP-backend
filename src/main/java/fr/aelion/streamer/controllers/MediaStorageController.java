@@ -74,8 +74,8 @@ public class MediaStorageController {
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         Resource file = mediaStorageService.load(filename);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"");
+//        headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"");
         return ResponseEntity.ok().headers(headers).body(file);
     }
 
