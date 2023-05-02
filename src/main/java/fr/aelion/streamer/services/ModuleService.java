@@ -120,7 +120,7 @@ public class ModuleService {
         newModule.setCreator((module.getCreator() != null) ? modelMapper.map(module.getCreator(), Member.class) : null);
         List<ModuleToMedia> moduleToMediaList = moduleToMediaRepository.getModulesToMediasByModuleId(module.getId());
         moduleToMediaList.forEach(m -> {
-            System.out.println(m);
+//            System.out.println(m);
             moduleToMediaRepository.delete(m);
         });
         newModule = repository.save(newModule);
