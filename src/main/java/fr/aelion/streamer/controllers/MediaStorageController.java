@@ -68,13 +68,15 @@ public class MediaStorageController {
 
         return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
     }
+
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         Resource file = mediaStorageService.load(filename);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"");
+        return ResponseEntity.ok().headers(headers).body(file);
     }
-
 
 }
