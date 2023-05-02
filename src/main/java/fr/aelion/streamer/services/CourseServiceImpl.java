@@ -202,24 +202,8 @@ public class CourseServiceImpl implements CourseService {
 
         if (course.getModules().size() > 0) {
             for (ModuleUpdateDto mDto : course.getModules()) {
-//                //delete old cTm et bordel c'est moche
-//                List<CourseToModule> cTmToDelete = new ArrayList<>();
-//                for (CourseToModule cTm : cTmOld) {
-//                    if (mDto.getId() != null) {
-//                        if (cTm.getModule().getId() != mDto.getId()) {
-//                            cTmToDelete.add(cTm);
-//                        }
-//                    }
-//                }
-//                cTmToDelete.forEach((CourseToModule ctm) -> {
-//                    //System.out.println(ctm.getModule().getName() + " /here/ " + ctm.getCourse().getTitle());
-//                });
-
-
+//                //delete old cTm (a refactoriser)
                 mDto.setCreator((course.getCreator() != null) ? modelMapper.map(course.getCreator(), MemberDto.class) : null);
-
-
-                //ModuleDto mod = (mDto.getId() != null) ? moduleService.update(mDto) : moduleService.add(mDto);
 
                 mDto.setId(null);
 
@@ -234,26 +218,6 @@ public class CourseServiceImpl implements CourseService {
                 courseToModuleRepository.save(courseToModule);
 
 
-//
-//                if (mDto.getMedias() != null) {
-//                    for (MediaDto mediaDto : mDto.getMedias()) {
-//                        Media newMedia = modelMapper.map(mediaDto, Media.class);
-//                        newMedia = mediaRepository.save(newMedia);
-//
-//                        ModuleToMedia moduleToMedia = new ModuleToMedia();
-//                        moduleToMedia.setMedia(newMedia);
-//                        moduleToMedia.setModule(newModule);
-//                        moduleToMediaRepository.save(moduleToMedia);
-//
-//
-//                    }
-//                }
-
-                //List<CourseToModule> cTm = new ArrayList<CourseToModule>();
-                //cTm.add(courseToModule);
-
-                //cTm.add();
-                //courseModules.add(courseToModule);
             }
         } else {
             courseToModuleRepository.deleteAll(cTmOld);

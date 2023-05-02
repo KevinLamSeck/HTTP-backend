@@ -16,6 +16,7 @@ public class CourseDto {
     private LocalDate createdAt;
 
     private LocalDate updatedAt;
+    private MemberDto creator;
 
     private String objective;
 

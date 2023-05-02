@@ -97,6 +97,7 @@ public class ModuleService {
                 Media newMedia = modelMapper.map(m, Media.class);
                 newMedia.setId(null);
                 newMedia.setCreatedAt(LocalDate.now());
+                newMedia.setCreator(creator);
                 newMedia = mediaRepository.save(newMedia);
 
                 //creer la table lien entre le module et chaques medias
