@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,8 +75,21 @@ public class MediaStorageController {
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         Resource file = mediaStorageService.load(filename);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"");
+
+        String contentType = null;
+        try {
+            contentType = URLConnection.guessContentTypeFromName(file.getFilename());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(file);
+        }
+
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"");
+
         return ResponseEntity.ok().headers(headers).body(file);
     }
 
